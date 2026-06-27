@@ -38,7 +38,69 @@ origin of everything.
 
 ---
 
-## THE LAW OF CARCINIZATION — *the heart of the whole thing*
+## KRAGGONOTH — first-born of the Karcons *(the villain, the head honcho)*
+
+He was a **regular crab** in the deep of the Brine. Nameless, mindless, one of
+uncountable millions on the black floor of the world.
+
+Then the sky broke. A **comet fell into the ocean** and shattered on the deep,
+and from its heart spilled a **glowing element** — a light that does not belong in
+this world. It found him first. It poured into his shell and it did not kill him;
+it *woke* him. It gave him a **mind**, and then it gave him **power**, and then it
+gave him a **hunger that has no bottom.** The first crab to ever *think* — and the
+first thought he ever had was: *all of this should be mine, and all of it should be
+like me.*
+
+He took a name no crab had ever needed: **KRAGGONOTH.**
+
+He is **first-born of the Karcons** — patient zero, war-king, and would-be god in
+one. And he is not finished. From the deep he **summons, still** — reaching for
+every crustacean the element can touch and **imbuing** it, waking it, twisting it
+into a soldier of his host. Every age the light spreads a little higher. Every age
+he summons a little more. The army is not marching *toward* completion — it is
+*being born,* endlessly, right now, faster than ever.
+
+- **What he wants:** not destruction — *conversion.* A single, silent, perfect
+  world, all of it carapace, all of it him. The Groove given a throne.
+- **What makes him terrible:** he was the first thing in creation to be *lonely,*
+  and his answer to loneliness is to make everything else into himself.
+- **Where he is:** the bottom of the **Abyss**, around the buried comet-heart,
+  closest to the element, oldest and most imbued. The final descent. The last boss.
+
+---
+
+## THE KARCONS — the imbued host
+
+The **Karcons** are crustaceans — mostly crabs — flooded with the comet's element
+and woken into Kraggonoth's army. Imbued = mutated, hardened, enlarged, and bent to
+his will. They are the **glow made flesh and claw.**
+
+The element pools deepest at the bottom, so **proximity to the comet-heart = power.**
+This gives us our difficulty curve *for free*:
+- **Surface Karcons** — faintly glowing, barely-changed scuttlers; the spillover.
+- **Lower Karcons** — fully imbued warriors; claw-knights, the **Molted** (last age's
+  people the element has half-claimed — *grieving, not evil; some can be saved*).
+- **Abyss Karcons** — monstrous, ancient, near-Kraggonoth in might; the Drowned Court.
+
+---
+
+## THE COMET & THE ELEMENT
+The glowing element is the engine of everything — the mutation, the summoning,
+Kraggonoth's mind, the slow turning of the world. **Name it:** *(undecided)*
+**Karcite** · the **Pale Ember** · **Moltglow** · **Vyrr** · **Kragstone** · the
+**Wakelight**. It fell once, long ago, into the deepest dark — and it has been
+seeping upward through the ages ever since. *That upward seep is why the world
+turns to crab from the bottom up, and why the surface's time is finally running
+out.*
+
+---
+
+## THE LAW OF CARCINIZATION — *the world's grain, now lit by the element*
+> The comet's element is the **physical cause** of the Groove: it forces living
+> things into the old shape, faster and more completely the more of it touches them.
+> The myth below is *why it works* — the element only had to nudge a world that was
+> already leaning crab-ward.
+
 
 In the **First Age** there was no land. Only the **Brine**: a black, sunless,
 bottomless sea. The first life was small and soft and many-legged, and the sea
@@ -118,13 +180,14 @@ The campaign arc, which is also the genre arc:
 ## NAMING TABLE *(pick favorites — nothing locked yet)*
 | thing | candidates |
 |---|---|
+| The villain (final boss) | **KRAGGONOTH** — *locked* |
+| The enemy army | the **KARCONS** — *locked* |
+| The comet element | **Karcite**, the **Pale Ember**, **Moltglow**, **Vyrr**, **Kragstone**, the **Wakelight** |
 | The sea / abyss | the **Brine**, the Underbrine, the Pale Brine, the Mother-Brine |
-| The law/curse | **Carcinization**, the **Groove**, the Turning, the Old Shape, the Moult |
-| The enemy host | the **Carcinine Host**, the **Tide**, the Shellbound, the Molted |
-| Surface vermin (tier 1) | Pinchlings, Scuttle, brine-touched |
-| Lower enemies (tier 2) | the **Molted**, Claw-knights, the Carapaced |
-| Abyss enemies (tier 3) | Shellwrights, Leviathan crabs, the Drowned Court |
-| The final god | the **CARCINION**, the Hollow Mother, the Pearl |
+| The law/curse | **Carcinization**, the **Groove**, the Turning, the Old Shape |
+| Surface Karcons (tier 1) | Pinchlings, Scuttle, the glow-touched |
+| Lower Karcons (tier 2) | the **Molted**, Claw-knights, the Carapaced |
+| Abyss Karcons (tier 3) | Shellwrights, Leviathan crabs, the Drowned Court |
 | Your faction | the **Unturned**, the Dry, the Delvers' Guild |
 | Your town | **Driftward**, Lastdry, Highmark |
 
@@ -133,14 +196,21 @@ The campaign arc, which is also the genre arc:
 ## CANON DECIDED SO FAR
 - Genre: top-down ARPG → found a town → military campaign. *(player goal: build town + troops)*
 - Three layers are **ages stacked by time**; descending = going back in time.
-- Antagonist: **mutant crustaceans / crabs** — the world's destiny, not an invader.
-- The engine of horror is **real carcinization** as cosmic law (the Groove).
+- Antagonist army: the **KARCONS** — mutant crustaceans (mostly crabs).
+- Final boss: **KRAGGONOTH**, first-born of the Karcons.
+- Origin engine: a **comet fell into the sea**; its **glowing element** woke a
+  regular crab into Kraggonoth (mind + power) and **imbues** crustaceans into Karcons.
+  He summons the host still, from the Abyss, endlessly.
+- The element is the physical cause of **carcinization** (the Groove); it seeps up
+  from the deep over ages — deeper = more imbued = stronger.
 - Tone: melancholy / mythic.
 
 ## OPEN QUESTIONS *(for next conversation)*
-- [ ] Lock the names (sea, curse, town, the god, your faction).
+- [ ] **Name the comet element** (Karcite / Pale Ember / Moltglow / Vyrr / ...).
+- [ ] Lock remaining names (sea, curse, town, your faction).
 - [ ] Is the player human, a Molted who turned back, or something else?
 - [ ] Does the personal-carcinization curse mechanic go in v1, or later?
 - [ ] Combat: melee confirmed — but what *kind* (Zelda swing / souls stamina / dodge-roll)?
 - [ ] How do layer transitions work in fiction (stairs? sinkholes? a Delvers' lift?).
 - [ ] Tone check: how dark do the Molted get — pitiable, or genuinely frightening?
+- [ ] Kraggonoth — does the player ever *meet* him before the end (taunts, a herald)?
