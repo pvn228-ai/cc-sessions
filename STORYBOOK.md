@@ -91,12 +91,22 @@ deepest dark, and it has seeped upward through the ages ever since. *That upward
 seep is why the world turns to crab from the bottom up, and why the surface's time
 is finally running out.*
 
-- **Looks:** a cold, pale-green glow inside black meteoric stone; veins of it run
-  through the deep rock and pulse faintly, like something breathing.
+- **Looks:** a cold **purple** glow inside black meteoric stone; veins of it run
+  through the deep rock and pulse faintly, like something breathing. Whole stretches
+  of the Brinedeep are lit only by it.
 - **What it does to crustaceans:** imbues — wakes, mutates, enlarges, enlists. The
   raw fuel of the Karcon host. This is what Kraggonoth reaches *through* to summon.
-- **What it does to everything else:** the Groove — forces flesh slowly toward the
-  old shape. (This is the seed of the player's personal-carcinization curse.)
+- **What it does to humans — two harms:** raw Karcite is **poison to human flesh.**
+  - **The Searing (fast):** standing near exposed/raw Karcite — veins, purple-glow
+    pools, flooded hotspots — **damages the player and human NPCs/troops over time.**
+    You can't *linger* in the deep; you grab and go, or you cook. This is the hazard
+    that enforces "raid, don't hold."
+  - **The Turning (slow):** prolonged exposure and *wielding* raw Karcite gear
+    nudges flesh toward the old shape over the long arc — the personal curse.
+- **Protection gates depth:** refined **Brightstone** is far safer to handle, and
+  **Sunbound (gold-tempered) gear / wards** blunt the Searing — so surviving the deep
+  **Brinedeep at all requires investment.** You can't just sprint to the bottom; the
+  hazard itself paces progression toward Kraggonoth.
 - **What it does for YOU — the economy keystone:** refined, Karcite is power.
   Delvers mine it from the deep; your town **refines** it; you forge it into
   **weapons, walls, and troops.** The cruel irony of the war: *the only thing strong
@@ -163,6 +173,16 @@ Use **room/area templates** per theme so the depths feel *built, then drowned*, 
 random noise — flooded temple halls, collapsed libraries, streets under silt in the
 Lower; cave-cathedrals and chitin growths in the Abyss. Procedural *arrangement* of
 authored *pieces*.
+
+### The Brinedeep (Abyss) — biome notes
+The deepest layer alternates between two looks, mixed per generated stretch:
+- **Flooded** — water-filled caverns and drowned halls (slows movement, limits
+  sight, hides things below the surface; home to the Drowned Court's worst).
+- **Caves** — raw dry rock, natural caverns, chitin growths and shell-cathedrals.
+- **Lit purple by Karcite.** Much of the Brinedeep has no light but the **purple
+  glow** of Karcite veins and pools — beautiful, and a **damage hazard** (the
+  Searing). The prettiest rooms are the ones trying to kill you. Glow density also
+  signals richness: more purple = more Karcite to mine = more danger to endure.
 
 ### Persistence — dungeons regenerate; you hold only your town(s) *(decided)*
 **Dungeons cannot be claimed, garrisoned, or held.** They are the enemy's ground.
@@ -387,6 +407,11 @@ comes from gear and growth.
   and crafted into goods/gear/troops. **Karcite** is the rare magic tier on top.
 - **Economy as moral dial:** raw Karcite = strong-but-corrupting; **gold + copper
   conduits temper it** (safe but costly). War pulls the player deeper, toward Kraggonoth.
+- **Karcite glows PURPLE** and **harms humans:** the **Searing** (DoT near raw
+  Karcite — enforces raid-don't-linger) and the **Turning** (slow curse). Brightstone
+  + Sunbound/wards protect; surviving the deep Brinedeep requires that investment.
+- **Brinedeep biomes:** alternating **flooded** caverns and dry **caves**, lit by
+  purple Karcite glow; more glow = more loot + more Searing.
 - **World gen:** Surface is authored & persistent; **Lower & Abyss are procedurally
   generated.** **Entry points set the run's length/depth, size, danger, richness** —
   bigger mouth → longer, deeper, richer, deadlier. Generation = procedural
