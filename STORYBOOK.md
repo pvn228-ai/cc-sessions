@@ -134,6 +134,30 @@ a long, deep, deadly expedition that may break through into the **Abyss** at the
 bottom. **Bigger mouth → longer, deeper, richer, deadlier.** The player reads the
 entrance and *chooses the expedition's scale.*
 
+### Generator unit — branching levels, D2 Cloister style *(decided)*
+A descent is a stack of **levels**; each level is a **branching cluster of our
+screen-sized areas**, generated like a Diablo II Cloister/Catacombs:
+
+- **One entrance** (the stairs you came down) and **one exit** — the **down-stairs**
+  to the next level, sitting at the end of exactly **one** branch.
+- The level **branches out** into multiple arms; **only one arm is "right"** (holds
+  the down-stairs). The rest are **dead-ends** — but they're where the **loot,
+  Karcite veins, ore, side-encounters, and optional mini-bosses** live.
+- So every level is a **risk/greed choice:** make a beeline for the stairs, or sweep
+  the dead-ends for resources and eat the danger/time.
+
+**Mapping to entry-point dials:**
+- **Length / Depth** = number of stacked levels (more levels → closer to the Abyss).
+- **Size / Breadth** = how many areas per level & how much it branches (bushier
+  cluster = more dead-ends = more loot & more risk).
+- The Abyss is just the deepest levels with the Abyss theme/enemy/richness tables —
+  reached when a deep enough entrance's stairs finally break through.
+
+*(Implementation: generate a graph of areas per level — pick a path of N areas for
+the critical route, attach M dead-end branches, place the down-stairs at the path's
+end, scatter loot/Karcite weighted toward the dead-ends. Areas still link at
+borders exactly as the Surface does.)*
+
 ### Generation flavor (keep the melancholy)
 Use **room/area templates** per theme so the depths feel *built, then drowned*, not
 random noise — flooded temple halls, collapsed libraries, streets under silt in the
@@ -308,7 +332,8 @@ The campaign arc, which is also the genre arc:
 
 ## OPEN QUESTIONS *(for next conversation)*
 - [ ] **Dungeon persistence model:** regenerate / persist-&-fortify / hybrid (leaning hybrid).
-- [ ] Generator unit: per-area interiors, or multi-area "levels" stacked into depth?
+- [x] Generator unit: **branching multi-area levels, D2 Cloister style** — one
+      critical path to the down-stairs, dead-ends hold the loot. *(decided)*
 - [ ] Lock remaining names (sea, curse, town, your faction, refined-Karcite).
 - [ ] Is the player human, a Molted who turned back, or something else?
 - [ ] Does the personal-carcinization curse mechanic go in v1, or later?
