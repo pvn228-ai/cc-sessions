@@ -164,12 +164,22 @@ random noise — flooded temple halls, collapsed libraries, streets under silt i
 Lower; cave-cathedrals and chitin growths in the Abyss. Procedural *arrangement* of
 authored *pieces*.
 
-### OPEN — the persistence model *(the big fork, see questions)*
-Do generated dungeons **regenerate** each descent (roguelike: fresh loot, replay,
-Karcite farming), **persist** once cleared (strategic: you hold and fortify
-reclaimed territory — fits the "reclaim the Lower" military arc), or **hybrid**
-(story/claimed digs persist & can be fortified; unstable "rifts" regenerate for
-farming and defense waves)? *Leaning hybrid.*
+### Persistence — dungeons regenerate; you hold only your town(s) *(decided)*
+**Dungeons cannot be claimed, garrisoned, or held.** They are the enemy's ground.
+Every descent **regenerates** (D2-style) — fresh branches, fresh loot, endless
+Karcite. You go down to *take*, not to *keep*; you always come back up.
+
+**The player owns one or two Surface towns — nothing else.**
+- **Town #1 — your home/refuge.** Where everything lives: smelter, refinery,
+  barracks, walls, the Unturned you've gathered. The heart you defend.
+- **Town #2 (optional, later) — a forward base** nearer a great Abyss-mouth, staged
+  for the endgame assault. A reason to *have* a second town, not just more sprawl.
+- Other Surface settlements exist but are **NPC-owned** — trade, recruit, quests,
+  not yours to govern.
+
+This reframes the war: you don't conquer the underworld, you **survive expeditions
+into it** and **defend your town(s) on the Surface**, until you're strong enough for
+the one-way march to the bottom.
 
 ---
 
@@ -278,8 +288,9 @@ The campaign arc, which is also the genre arc:
    for the **Unturned** — humans, beasts, and even Molted who fought the groove and
    partly won. You rebuild, recruit, equip.
 3. **COMMANDER (military).** You raise troops and do what no age has ever done:
-   *refuse to sink.* You push down on your own terms — hold the Surface, reclaim
-   the Lower, assault the Abyss — and put a blade in the first crab.
+   *refuse to sink.* You can't hold the depths — so you **defend your town(s) on the
+   Surface** and **raid downward** for Karcite and strength, until you're ready for
+   the one-way **assault on the Abyss** to put a blade in the first crab.
 
 ---
 
@@ -328,10 +339,14 @@ The campaign arc, which is also the genre arc:
   generated.** **Entry points set the run's length/depth, size, danger, richness** —
   bigger mouth → longer, deeper, richer, deadlier. Generation = procedural
   arrangement of authored room templates per theme.
+- **Persistence:** dungeons **can't be claimed** — they **regenerate** every descent
+  (raid, don't hold). Player owns **only 1–2 Surface towns** (home + optional forward
+  base); other settlements are NPC-owned.
+- **Military arc:** defend your town(s), raid the depths for Karcite/strength, then a
+  one-way assault on the Abyss. No territory-holding underground.
 - Tone: melancholy / mythic.
 
 ## OPEN QUESTIONS *(for next conversation)*
-- [ ] **Dungeon persistence model:** regenerate / persist-&-fortify / hybrid (leaning hybrid).
 - [x] Generator unit: **branching multi-area levels, D2 Cloister style** — one
       critical path to the down-stairs, dead-ends hold the loot. *(decided)*
 - [ ] Lock remaining names (sea, curse, town, your faction, refined-Karcite).
