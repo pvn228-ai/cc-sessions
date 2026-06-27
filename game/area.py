@@ -1,95 +1,162 @@
-"""A single screen-sized area of the world.
+"""A single screen-sized Room — the shared unit for both the authored Surface
+and the generated dungeon.
 
-An Area owns its tiles, coins, and enemies, and runs collision/coin/enemy
-logic. Areas are created once and cached by the World, so any coins you
-collect stay collected when you leave and come back -- that is what makes
-the world feel persistent.
+A Room parses an ASCII grid into tiles/hazards/loot/props/enemies, draws them,
+and resolves per-frame combat (player attacks, enemy contact, Searing, pickups)
+in one place so both the Surface (``world``) and the Dungeon reuse it. Border
+crossings are detected here but resolved by the caller, which knows the map.
 
-Borders are detected but NOT resolved here: ``check_border`` reports which
-edge (if any) the player has crossed, and the World decides whether to
-transition to a neighbour or treat the edge as a solid wall.
+Glyph legend:
+    #  solid tile        ^  Karcite hazard (Searing)   *  karcite loot
+    $  coin              E  Pinchling enemy            P  player spawn
+    N  NPC               D  dungeon entrance           >  stairs down
+    (space) empty
 """
 
 import pygame
 
 from . import settings as cfg
-from .entities import Tile, Coin, Enemy
+from .entities import Tile, Hazard, Loot, Prop, Pinchling
 
-# Border identifiers returned by ``check_border``.
 WEST, EAST, NORTH, SOUTH = "west", "east", "north", "south"
 
 
-class Area:
-    def __init__(self, name, rows):
-        self.name = name
+class Room:
+    def __init__(self, rows, theme="surface", npc_lines=None):
+        self.theme = theme
         self.tiles = pygame.sprite.Group()
-        self.coins = pygame.sprite.Group()
+        self.hazards = pygame.sprite.Group()
+        self.loot = pygame.sprite.Group()
         self.enemies = pygame.sprite.Group()
-        self.spawn_tile = None  # (x, y) of a 'P' glyph, if present
+        self.props = pygame.sprite.Group()
+        self.spawn_tile = None
+        self.entrance = None
+        self.stairs = None
+        self.exit_prop = None
+
+        npc_lines = npc_lines or []
+        npc_i = 0
 
         for r in range(cfg.AREA_ROWS):
             row = rows[r] if r < len(rows) else ""
             for c in range(cfg.AREA_COLS):
-                char = row[c] if c < len(row) else " "
+                ch = row[c] if c < len(row) else " "
                 x, y = c * cfg.TILE_SIZE, r * cfg.TILE_SIZE
-                if char == "#":
-                    self.tiles.add(Tile(x, y))
-                elif char == "C":
-                    self.coins.add(Coin(x, y))
-                elif char == "E":
-                    self.enemies.add(Enemy(x, y))
-                elif char == "P":
+                if ch == "#":
+                    self.tiles.add(Tile(x, y, theme))
+                elif ch == "^":
+                    self.hazards.add(Hazard(x, y))
+                elif ch == "*":
+                    self.loot.add(Loot(x, y, "karcite", 1))
+                elif ch == "$":
+                    self.loot.add(Loot(x, y, "coin", 1))
+                elif ch == "E":
+                    self.enemies.add(Pinchling(x, y, theme))
+                elif ch == "P":
                     self.spawn_tile = (x, y)
+                elif ch == "N":
+                    line = npc_lines[npc_i] if npc_i < len(npc_lines) else "..."
+                    npc_i += 1
+                    self.props.add(Prop(x, y, "npc", line=line))
+                elif ch == "D":
+                    self.entrance = Prop(x, y - cfg.TILE_SIZE, "entrance",
+                                         h=cfg.TILE_SIZE * 2)
+                    self.props.add(self.entrance)
+                elif ch == ">":
+                    self.stairs = Prop(x, y, "stairs")
+                    self.props.add(self.stairs)
+                elif ch == "<":
+                    self.exit_prop = Prop(x, y, "exit")
+                    self.props.add(self.exit_prop)
 
-    # -- per-frame logic -----------------------------------------------------
+    # ----------------------------------------------------------------- update
     def update(self, player):
-        """Advance this area for one frame. Returns coins collected this frame."""
+        """Advance the room one frame. Returns a dict of events for the scene:
+        ``{"picked": [Loot,...]}``. Death is read from ``player.dead``."""
         tiles = self.tiles.sprites()
         player.update(tiles)
         for enemy in self.enemies:
-            enemy.update(tiles)
-        self.coins.update()
+            enemy.update(tiles, player)
+        self.hazards.update()
+        self.loot.update()
 
-        gained = pygame.sprite.spritecollide(player, self.coins, dokill=True)
-        return len(gained)
+        self._resolve_attacks(player)
+        self._resolve_contact(player)
+        self._resolve_searing(player)
+        picked = self._resolve_pickups(player)
+        return {"picked": picked}
 
-    def player_hit_enemy(self, player):
-        return any(player.rect.colliderect(e.rect) for e in self.enemies)
+    def _resolve_attacks(self, player):
+        if player.attack_rect is None or player.attack_type is None:
+            return
+        for enemy in list(self.enemies):
+            if player.already_hit(enemy):
+                continue
+            if player.attack_rect.colliderect(enemy.rect):
+                enemy.receive(player.attack_damage, player.attack_type, player.rect.centerx)
+                player.mark_hit(enemy)
 
-    # -- borders -------------------------------------------------------------
+    def _resolve_contact(self, player):
+        for enemy in self.enemies:
+            if enemy.touches(player):
+                player.take_hit(cfg.PINCHLING_TOUCH_DAMAGE, enemy.rect.centerx)
+
+    def _resolve_searing(self, player):
+        for hz in self.hazards:
+            if player.rect.colliderect(hz.rect):
+                player.sear()   # i-frames inside sear() rate-limit the damage
+                break
+
+    def _resolve_pickups(self, player):
+        hit = pygame.sprite.spritecollide(player, self.loot, dokill=True)
+        return hit
+
+    # ----------------------------------------------------------- interaction
+    def nearby_prop(self, player):
+        """The closest interactable prop within reach, or None."""
+        best, best_d = None, 999999
+        for prop in self.props:
+            if prop.kind not in ("npc", "entrance", "stairs", "exit"):
+                continue
+            d = abs(prop.rect.centerx - player.rect.centerx)
+            if d < cfg.TILE_SIZE and abs(prop.rect.centery - player.rect.centery) < cfg.TILE_SIZE * 2:
+                if d < best_d:
+                    best, best_d = prop, d
+        return best
+
+    # ---------------------------------------------------------------- borders
     def check_border(self, player):
-        """Which edge the player has crossed this frame, or None."""
         if player.rect.left < 0:
             return WEST
         if player.rect.right > cfg.SCREEN_WIDTH:
             return EAST
         if player.rect.top < 0:
             return NORTH
-        if player.rect.top > cfg.SCREEN_HEIGHT:  # fell through the bottom
+        if player.rect.top > cfg.SCREEN_HEIGHT:
             return SOUTH
         return None
 
     def clamp_player(self, player, border):
-        """Keep the player inside this area (used when a border has no neighbour)."""
         if border == WEST:
             player.rect.left = 0
-            player.vel.x = 0
         elif border == EAST:
             player.rect.right = cfg.SCREEN_WIDTH
-            player.vel.x = 0
         elif border == NORTH:
             player.rect.top = 0
             player.vel.y = 0
         elif border == SOUTH:
-            # No floor below: bounce them back up so they don't vanish.
             player.rect.bottom = cfg.SCREEN_HEIGHT
             player.vel.y = 0
 
-    # -- drawing -------------------------------------------------------------
+    # ---------------------------------------------------------------- drawing
     def draw(self, surface, offset=(0, 0)):
+        for hz in self.hazards:
+            hz.draw(surface, offset)
         for tile in self.tiles:
             tile.draw(surface, offset)
-        for coin in self.coins:
-            coin.draw(surface, offset)
+        for prop in self.props:
+            prop.draw(surface, offset)
+        for lt in self.loot:
+            lt.draw(surface, offset)
         for enemy in self.enemies:
             enemy.draw(surface, offset)

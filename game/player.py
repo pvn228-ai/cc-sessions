@@ -1,8 +1,12 @@
-"""The player character and its platforming physics.
+"""The player: a nimble human teen who runs, jumps, dashes, and swings.
 
-Collision uses the standard "move on one axis, then resolve" approach so
-the player never tunnels through tiles. The feel is rounded out with
-coyote time, a jump buffer, and variable jump height.
+Platformer physics (gravity, jump, coyote time, variable jump) carry over from
+the prototype. On top sits the combat kit: a light swing, a heavy "Shellbreaker",
+an aerial plunge, a dashing dodge with i-frames, plus HP and stamina.
+
+Attacks are exposed as a transient hitbox (``attack_rect`` + ``attack_type`` +
+``facing``) that the current Room resolves against enemies, so the player does
+not need to know what it is hitting.
 """
 
 import pygame
@@ -13,60 +17,127 @@ from . import settings as cfg
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.rect = pygame.Rect(x, y, cfg.TILE_SIZE - 8, cfg.TILE_SIZE - 2)
+        self.rect = pygame.Rect(x, y, cfg.TILE_SIZE - 12, cfg.TILE_SIZE - 4)
         self.spawn = (x, y)
         self.vel = pygame.Vector2(0, 0)
         self.on_ground = False
         self.facing = 1
 
-        self._coyote = 0          # frames since last grounded
-        self._jump_buffer = 0     # frames since jump was pressed
+        self.hp = cfg.PLAYER_MAX_HP
+        self.stamina = cfg.STAMINA_MAX
+        self.iframes = 0
+        self.dead = False
+
+        # jump feel
+        self._coyote = 0
+        self._jump_buffer = 0
         self._jump_held = False
 
-    # -- input ---------------------------------------------------------------
+        # dash
+        self._dash_timer = 0
+        self._dash_cd = 0
+        self._dash_dir = 1
+
+        # attack
+        self.attack_type = None        # None | "light" | "heavy" | "plunge"
+        self._attack_timer = 0
+        self._windup = 0
+        self._hit_ids = set()
+        self.attack_rect = None
+
+    # ------------------------------------------------------------------ input
+    def on_jump(self):
+        self._jump_buffer = cfg.JUMP_BUFFER_FRAMES
+
+    def on_attack_light(self):
+        if self.attack_type is None and not self._dashing():
+            self.attack_type = "light"
+            self._attack_timer = cfg.SWING_FRAMES
+            self._windup = 0
+            self._hit_ids = set()
+
+    def on_attack_heavy(self):
+        if self.attack_type is None and not self._dashing() and self.stamina >= cfg.HEAVY_COST:
+            self.stamina -= cfg.HEAVY_COST
+            self.attack_type = "heavy"
+            self._windup = cfg.HEAVY_WINDUP
+            self._attack_timer = cfg.HEAVY_FRAMES
+            self._hit_ids = set()
+
+    def on_plunge(self):
+        if not self.on_ground and self.attack_type != "plunge":
+            self.attack_type = "plunge"
+            self._attack_timer = 999  # ends on landing
+            self._windup = 0
+            self._hit_ids = set()
+            self.vel.y = cfg.PLUNGE_SPEED
+
+    def on_dash(self):
+        if self._dash_cd <= 0 and self.stamina >= cfg.DASH_COST and not self._dashing():
+            self.stamina -= cfg.DASH_COST
+            self._dash_timer = cfg.DASH_FRAMES
+            self._dash_cd = cfg.DASH_FRAMES + cfg.DASH_COOLDOWN
+            self._dash_dir = self.facing
+            self.iframes = max(self.iframes, cfg.DASH_IFRAMES)
+
+    def _dashing(self):
+        return self._dash_timer > 0
+
     def handle_input(self, keys):
-        self.vel.x = 0
+        if self._dashing():
+            return  # dash controls horizontal velocity
+        move = 0
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-            self.vel.x = -cfg.PLAYER_SPEED
-            self.facing = -1
+            move -= 1
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-            self.vel.x = cfg.PLAYER_SPEED
-            self.facing = 1
+            move += 1
+        # No turning/strafing mid-heavy-windup — committing to the swing.
+        if self._windup > 0:
+            move = 0
+        self.vel.x = move * cfg.PLAYER_SPEED
+        if move != 0:
+            self.facing = move
 
         jump_down = keys[pygame.K_SPACE] or keys[pygame.K_UP] or keys[pygame.K_w]
-        if jump_down and not self._jump_held:
-            self._jump_buffer = cfg.JUMP_BUFFER_FRAMES
-        # Releasing jump while rising cuts the jump short (variable height).
         if not jump_down and self.vel.y < 0:
-            self.vel.y *= cfg.JUMP_CUT_MULTIPLIER
+            self.vel.y *= cfg.JUMP_CUT_MULTIPLIER  # variable jump height
         self._jump_held = jump_down
 
-    # -- physics -------------------------------------------------------------
+    # ---------------------------------------------------------------- physics
     def update(self, tiles):
-        # Gravity.
-        self.vel.y = min(self.vel.y + cfg.GRAVITY, cfg.MAX_FALL_SPEED)
+        if self.dead:
+            return
 
-        # Consume buffered jump if we are grounded or within coyote time.
-        if self._jump_buffer > 0 and (self.on_ground or self._coyote > 0):
-            self.vel.y = -cfg.JUMP_SPEED
-            self._jump_buffer = 0
-            self._coyote = 0
-            self.on_ground = False
+        if self.stamina < cfg.STAMINA_MAX:
+            self.stamina = min(cfg.STAMINA_MAX, self.stamina + cfg.STAMINA_REGEN)
+        if self._dash_cd > 0:
+            self._dash_cd -= 1
+        if self.iframes > 0:
+            self.iframes -= 1
 
-        # Horizontal movement and resolution.
+        if self._dashing():
+            self.vel.x = self._dash_dir * cfg.DASH_SPEED
+            self.vel.y = 0
+            self._dash_timer -= 1
+        else:
+            self.vel.y = min(self.vel.y + cfg.GRAVITY, cfg.MAX_FALL_SPEED)
+            if self._jump_buffer > 0 and (self.on_ground or self._coyote > 0):
+                self.vel.y = -cfg.JUMP_SPEED
+                self._jump_buffer = 0
+                self._coyote = 0
+                self.on_ground = False
+
+        # Horizontal, then vertical, resolving collisions per axis.
         self.rect.x += round(self.vel.x)
-        self._resolve(tiles, axis="x")
-
-        # Vertical movement and resolution.
-        was_on_ground = self.on_ground
+        self._resolve(tiles, "x")
         self.on_ground = False
         self.rect.y += round(self.vel.y)
-        self._resolve(tiles, axis="y")
+        self._resolve(tiles, "y")
 
-        # Update timers.
         self._coyote = cfg.COYOTE_FRAMES if self.on_ground else max(0, self._coyote - 1)
         self._jump_buffer = max(0, self._jump_buffer - 1)
-        _ = was_on_ground  # reserved for landing effects/sounds later
+
+        self._update_attack()
 
     def _resolve(self, tiles, axis):
         for tile in tiles:
@@ -77,28 +148,111 @@ class Player(pygame.sprite.Sprite):
                     self.rect.right = tile.rect.left
                 elif self.vel.x < 0:
                     self.rect.left = tile.rect.right
-            else:  # axis == "y"
+                if self._dashing():
+                    self._dash_timer = 0
+            else:
                 if self.vel.y > 0:
                     self.rect.bottom = tile.rect.top
                     self.on_ground = True
                     self.vel.y = 0
+                    if self.attack_type == "plunge":
+                        self.attack_type = None  # plunge ends on landing
+                        self.attack_rect = None
                 elif self.vel.y < 0:
                     self.rect.top = tile.rect.bottom
                     self.vel.y = 0
 
-    def respawn(self):
-        self.rect.topleft = self.spawn
-        self.vel.update(0, 0)
-        self.on_ground = False
+    def _update_attack(self):
+        if self.attack_type is None:
+            self.attack_rect = None
+            return
+        if self._windup > 0:
+            self._windup -= 1
+            self.attack_rect = None
+            return
+        if self.attack_type == "plunge":
+            # Hitbox sits just below the feet for the whole fall.
+            self.attack_rect = pygame.Rect(self.rect.x - 4, self.rect.bottom - 6,
+                                           self.rect.width + 8, 18)
+            return
+        reach = cfg.HEAVY_REACH if self.attack_type == "heavy" else cfg.SWING_REACH
+        if self.facing > 0:
+            ax = self.rect.right
+        else:
+            ax = self.rect.left - reach
+        self.attack_rect = pygame.Rect(ax, self.rect.y + 4, reach, self.rect.height - 8)
+        self._attack_timer -= 1
+        if self._attack_timer <= 0:
+            self.attack_type = None
+            self.attack_rect = None
 
-    # -- drawing -------------------------------------------------------------
-    def draw(self, surface, offset):
+    def already_hit(self, enemy):
+        return id(enemy) in self._hit_ids
+
+    def mark_hit(self, enemy):
+        self._hit_ids.add(id(enemy))
+
+    @property
+    def attack_damage(self):
+        return {"light": cfg.SWING_DAMAGE, "heavy": cfg.HEAVY_DAMAGE,
+                "plunge": cfg.PLUNGE_DAMAGE}.get(self.attack_type, 0)
+
+    # ------------------------------------------------------------- being hurt
+    def take_hit(self, damage, source_x):
+        if self.iframes > 0 or self.dead:
+            return False
+        self.hp -= damage
+        self.iframes = cfg.PLAYER_IFRAMES
+        knock = cfg.PLAYER_KNOCKBACK if self.rect.centerx >= source_x else -cfg.PLAYER_KNOCKBACK
+        self.vel.x = knock
+        self.vel.y = -6
+        if self.hp <= 0:
+            self.hp = 0
+            self.dead = True
+        return True
+
+    def sear(self):
+        """Environmental Karcite damage — bypasses knockback but respects i-frames."""
+        if self.iframes > 0 or self.dead:
+            return False
+        self.hp -= cfg.SEARING_DAMAGE
+        self.iframes = cfg.SEARING_INTERVAL
+        if self.hp <= 0:
+            self.hp = 0
+            self.dead = True
+        return True
+
+    def revive(self, spawn=None):
+        self.hp = cfg.PLAYER_MAX_HP
+        self.stamina = cfg.STAMINA_MAX
+        self.dead = False
+        self.iframes = 0
+        self.vel.update(0, 0)
+        self.attack_type = None
+        self.attack_rect = None
+        if spawn is not None:
+            self.rect.topleft = spawn
+
+    # --------------------------------------------------------------- drawing
+    def draw(self, surface, offset=(0, 0)):
         r = self.rect.move(offset)
-        pygame.draw.rect(surface, cfg.PLAYER_COLOR, r, border_radius=8)
-        # Eyes look in the facing direction.
+        if self._dashing():
+            color = cfg.PLAYER_DASH_COLOR
+        elif self.iframes > 0 and (self.iframes // 4) % 2 == 0:
+            color = cfg.PLAYER_IFRAME_COLOR
+        else:
+            color = cfg.PLAYER_COLOR
+        pygame.draw.rect(surface, color, r, border_radius=7)
+
         eye_y = r.y + r.height // 3
         ex = r.centerx + self.facing * 4
-        pygame.draw.circle(surface, cfg.PLAYER_EYE_COLOR, (ex - 5, eye_y), 4)
-        pygame.draw.circle(surface, cfg.PLAYER_EYE_COLOR, (ex + 5, eye_y), 4)
-        pygame.draw.circle(surface, cfg.SHADOW_COLOR, (ex - 5 + self.facing, eye_y), 2)
-        pygame.draw.circle(surface, cfg.SHADOW_COLOR, (ex + 5 + self.facing, eye_y), 2)
+        pygame.draw.circle(surface, cfg.PLAYER_EYE_COLOR, (ex - 4, eye_y), 4)
+        pygame.draw.circle(surface, cfg.PLAYER_EYE_COLOR, (ex + 4, eye_y), 4)
+        pygame.draw.circle(surface, cfg.SHADOW_COLOR, (ex - 4 + self.facing, eye_y), 2)
+        pygame.draw.circle(surface, cfg.SHADOW_COLOR, (ex + 4 + self.facing, eye_y), 2)
+
+        # Show the swing arc when its hitbox is live.
+        if self.attack_rect is not None:
+            ar = self.attack_rect.move(offset)
+            width = 0 if self.attack_type == "heavy" else 3
+            pygame.draw.rect(surface, cfg.SWING_COLOR, ar, width, border_radius=4)

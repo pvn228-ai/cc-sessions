@@ -526,4 +526,7 @@ whether the core is fun.
 - [x] Molted tone: **destined for the sword — tragic, unsavable.** *(decided)*
 - [ ] Kraggonoth — does the player ever *meet* him before the end? *(not yet — later)*
 - [ ] Sketch the opening 10 minutes (the inciting delve). *(not yet — later)*
-- [ ] **v1 vertical slice** — scope written below; awaiting go-ahead to build.
+- [x] **v1 vertical slice** — BUILT. Platformer movement, swing/Shellbreaker/plunge/
+      dash combat, the Pinchling shell loop, purple Karcite Searing, hillside
+      Larkhollow + NPC, procedural hub+2-branch descent (one stairway), carry-loot +
+      lose-on-death. Runs (`python main.py`); headless tests pass (`python smoke_test.py`).
