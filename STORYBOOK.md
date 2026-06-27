@@ -465,7 +465,40 @@ comes from gear and growth.
   Deepgate), not a delving squad. The town faces **occasional Karcon raids/sieges**.
 - **Recruiting:** **humans only** (Greenward folk, refugees, delvers). **The Molted
   cannot be saved or recruited** — that impossibility is the story's wound.
+- **Death:** dying in a dungeon = **lose the run's loot** (wake in town). Roguelike
+  stakes; the town and your character persist.
+- **Progression:** **gear + XP/levels + a skill tree** (all three).
+- **The Turning curse:** **not in v1** — stub the data, wire it later.
+- **The Molted are destined for the sword** — tragic, unsavable enemies you put down.
 - Tone: melancholy / mythic, whimsical names.
+
+## v1 VERTICAL SLICE — the first playable *(build plan)*
+A **vertical slice** = the smallest build that proves the *core feel* is fun, with
+every other system faked or omitted. Not content — *proof of the loop.* Goal: walk
+the town → descend → fight a crab the right way → grab loot → climb out → see it
+matter. If that 60-second loop feels good, everything else is worth building.
+
+**IN (v1):**
+- **Top-down movement** — convert the prototype from platformer physics to 8-dir
+  walking with wall collision. (Reuses our area/world/border engine as-is.)
+- **Swing + crack-the-shell combat** — light swing, charged Shellbreaker, dash
+  (i-frames), stamina. **One enemy: a Pinchling** that guards frontally so the
+  flank/punish loop is real.
+- **One Karcite-Searing hazard tile** (purple glow that damages you over time) — the
+  signature "the pretty thing hurts" beat.
+- **A tiny Larkhollow** — a few buildings, one NPC, the safe hub you return to.
+- **One hand-made dungeon entrance → one short generated descent** (2–3 branching
+  levels, D2-style, with the down-stairs on one branch and loot in a dead-end).
+- **Carry-loot + lose-on-death** — pick up Karcite/coin, die = lose it, exit = keep it.
+- Placeholder art (shapes/colors), like the current prototype.
+
+**OUT (faked or deferred for v1):** crafting tree, the six resources, troops &
+raids, XP/skills, the Turning curse, water/Karium, the Abyss, multiple enemies,
+story/dialogue, sound. All have homes in the bible; none are needed to test the feel.
+
+**Why this slice:** it touches the three pillars that make or break the game —
+**movement, the shell-combat, and the descend-raid-return loop** — and nothing else.
+Cheap to build, brutally honest about whether the core is fun.
 
 ## OPEN QUESTIONS *(for next conversation)*
 - [x] Generator unit: **branching multi-area levels, D2 Cloister style.** *(decided)*
@@ -474,10 +507,10 @@ comes from gear and growth.
 - [x] Combat kind: **directional swing + crack-the-shell.** *(decided)*
 - [x] Army role: **solo delving, troops garrison/defend; occasional raids.** *(decided)*
 - [x] Recruiting: **humans only; Molted unsavable.** *(decided)*
-- [ ] Does the personal-Turning curse mechanic go in v1, or later?
-- [ ] Death/failure in a dungeon: roguelike loot-loss, or forgiving?
-- [ ] Progression: gear-only, or XP/levels/skill-tree on top?
-- [ ] Tone check: how dark do the Molted get — pitiable, or genuinely frightening?
-- [ ] Kraggonoth — does the player ever *meet* him before the end (taunts, a herald)?
-- [ ] Sketch the opening 10 minutes (the inciting delve).
-- [ ] **Start building:** convert the prototype to top-down + combat + first town?
+- [x] Curse in v1? **No — stub it, add later.** *(decided)*
+- [x] Death/failure: **lose the run's loot.** *(decided)*
+- [x] Progression: **gear + XP/levels + skill tree.** *(decided)*
+- [x] Molted tone: **destined for the sword — tragic, unsavable.** *(decided)*
+- [ ] Kraggonoth — does the player ever *meet* him before the end? *(not yet — later)*
+- [ ] Sketch the opening 10 minutes (the inciting delve). *(not yet — later)*
+- [ ] **v1 vertical slice** — scope written below; awaiting go-ahead to build.
