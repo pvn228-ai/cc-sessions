@@ -79,7 +79,7 @@ The element pools deepest at the bottom, so **proximity to the comet-heart = pow
 This gives us our difficulty curve *for free*:
 - **Surface Karcons** — faintly glowing, barely-changed scuttlers; the spillover.
 - **Lower Karcons** — fully imbued warriors; claw-knights, the **Molted** (last age's
-  people the element has half-claimed — *grieving, not evil; some can be saved*).
+  people the element has half-claimed — *grieving, not evil, but past saving*).
 - **Abyss Karcons** — monstrous, ancient, near-Kraggonoth in might; the Drowned Court.
 
 ---
@@ -335,8 +335,8 @@ The campaign arc, which is also the genre arc:
 1. **DELVER (action-RPG).** Alone. Sword, exploration, the first horror of meeting
    a Molted that says your name.
 2. **FOUNDER (town-building).** You claim the last dry place and make it a refuge
-   for the **Unturned** — humans, beasts, and even Molted who fought the groove and
-   partly won. You rebuild, recruit, equip.
+   for the **Unturned** — humans who refuse to turn: Greenward folk, refugees from
+   raided villages, fellow delvers, the stubborn. You rebuild, recruit, equip.
 3. **COMMANDER (military).** You raise troops and do what no age has ever done:
    *refuse to sink.* You can't hold the depths — so you **defend your town(s) on the
    Surface** and **raid downward** for Karcite and strength, until you're ready for
@@ -344,9 +344,23 @@ The campaign arc, which is also the genre arc:
 
 ---
 
+## ARMY & TOWN DEFENSE *(decided)*
+- **You delve solo. Troops defend home.** Your army is a **garrison** for Larkhollow
+  (and later Deepgate), not a squad you take down the stairs. The Brinedeep is a
+  lone teen with a sword and a lantern; the *town* is where numbers matter.
+- **Occasional Karcon raids.** The surface isn't safe either. Now and then the
+  Karcons **boil up and raid your town** — repel them with your **walls, defenses,
+  and garrisoned troops**. Not constant tower-defense; **periodic sieges** that
+  punish neglecting your defenses while you're off delving.
+- **Recruit humans only.** Your soldiers and townsfolk are **humans** — Greenward
+  villagers, refugees from raided settlements, fellow delvers, the stubborn Unturned.
+  *(See below: the Molted cannot be recruited.)*
+
 ## THE TWIST SEEDS *(melancholy / mythic — earn the sadness)*
-- **The Molted can be saved.** Some. Carcinization is a slow death of *self*, not a
-  monster factory. Recruiting a half-turned soldier means racing their clock.
+- **The Molted can't be saved — and that's the wound.** They are grieving people the
+  Karcite half-claimed, not a monster factory and not a rescue mission. There is no
+  mechanic to bring them back; you can only cut them down. The horror is that they
+  were *exactly like you*, and one day you might be one — fought by some other kid.
 - **You carry the groove too.** Going deep accelerates your own turning — a mark
   that spreads. The town and the surface are where you heal it back. The deeper the
   war goes, the more you risk becoming the thing you fight.
@@ -447,6 +461,10 @@ comes from gear and growth.
 - **Combat:** top-down **directional swing** + **crack-the-shell** — flank or punish
   the raised claw; Shellbreaker cracks armor for a stagger window; light/heavy/dash
   + stamina. Naming/tone whimsical-fantasy over a melancholy world.
+- **Army:** you **delve solo**; troops are a **home garrison** (defend Larkhollow /
+  Deepgate), not a delving squad. The town faces **occasional Karcon raids/sieges**.
+- **Recruiting:** **humans only** (Greenward folk, refugees, delvers). **The Molted
+  cannot be saved or recruited** — that impossibility is the story's wound.
 - Tone: melancholy / mythic, whimsical names.
 
 ## OPEN QUESTIONS *(for next conversation)*
@@ -454,7 +472,11 @@ comes from gear and growth.
 - [x] Lock remaining names. *(done)*
 - [x] Player identity: **human teen, guild initiate.** *(decided)*
 - [x] Combat kind: **directional swing + crack-the-shell.** *(decided)*
+- [x] Army role: **solo delving, troops garrison/defend; occasional raids.** *(decided)*
+- [x] Recruiting: **humans only; Molted unsavable.** *(decided)*
 - [ ] Does the personal-Turning curse mechanic go in v1, or later?
+- [ ] Death/failure in a dungeon: roguelike loot-loss, or forgiving?
+- [ ] Progression: gear-only, or XP/levels/skill-tree on top?
 - [ ] Tone check: how dark do the Molted get — pitiable, or genuinely frightening?
 - [ ] Kraggonoth — does the player ever *meet* him before the end (taunts, a herald)?
 - [ ] Sketch the opening 10 minutes (the inciting delve).
