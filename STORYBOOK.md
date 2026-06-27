@@ -2,7 +2,9 @@
 *Living story bible & memory file. We add to this as canon is decided.*
 
 > Working title: **THE GROOVE** *(or: Carcinion / The Unturned / Driftward — undecided)*
-> Genre: top-down action-RPG → town-founding → military campaign.
+> Genre: **side-view action-platformer RPG** (Terraria / Hollow Knight lineage) →
+> town-founding → military campaign. Run, jump, swing; **descend** through stacked
+> layers — down the screen *is* down the world.
 > Tone: **melancholy / mythic** — quiet, lonely, the archaeology of a dying world.
 
 ---
@@ -371,28 +373,34 @@ The campaign arc, which is also the genre arc:
 
 ## COMBAT — directional swing + crack-the-shell *(locked: core feel)*
 
-**Base:** top-down, **face a direction and swing** (Zelda / Hyper Light Drifter).
-Fast, readable, no auto-aim — you hit the arc in front of you. But every enemy is a
-**crab**, so the depth comes from the one thing they all have: **a shell and raised
-claws.** You don't just trade hits — you *open* them up.
+**Base:** side-view platformer — **run, jump, and face left/right to swing**
+(Hollow Knight / Dead Cells / Castlevania). Fast, readable; you hit the arc in front
+of you, and the **jump adds a whole vertical axis** to attack and dodge. But every
+enemy is a **crab**, so the depth comes from the one thing they all have: **a shell
+and raised claws.** You don't just trade hits — you *open* them up.
 
 **The signature loop — shells & guard:**
 - **Frontal guard.** Karcons face you claws-up. A swing into a raised guard **chips
   for little and bounces you** — mashing the front is a trap.
-- **Open the opening.** Two clean answers, both about *positioning and timing*:
-  1. **Flank it** — strike the **side/back** (soft joints) for full damage. Rewards
-     movement, kiting, dashing *through* an attack to its blind side.
+- **Open the opening.** Clean answers, all about *positioning and timing*:
+  1. **Flank it** — get to its **back/soft joints** for full damage: **jump over it**
+     or **dash through** an attack to its blind side. (Verticality makes this richer
+     than a top-down game — leap the claw, come down behind.)
   2. **Punish the claw** — when it **raises a claw to attack**, the guard drops; hit
-     the window. Rewards reading tells (light parry/bait feel, no hard parry timing).
+     the window. Rewards reading tells (light bait/parry feel, no hard timing).
+  3. **Come from above** — a **plunge/down-attack** lands on the carapace from the
+     air, bypassing the frontal guard entirely (and great off a ledge).
 - **Crack the carapace.** Bigger Karcons need their **shell broken first**: land
   hits / a charged **Shellbreaker** to crack the plate, exposing flesh and a
   **stagger window** of bonus damage (Monster-Hunter-part-break, but lightweight).
 
 **The kit (small, expressive):**
-- **Light swing** — fast directional arc, cheap. Your bread and butter.
+- **Light swing** — fast left/right arc, cheap. Your bread and butter.
 - **Heavy / charged "Shellbreaker"** — slow wind-up, breaks guard & cracks shell;
   costs stamina, leaves you exposed. Commitment.
-- **Dash / roll** — i-frames + the repositioning tool; how you get to the flank.
+- **Jump** — traversal *and* combat: leap the guard to flank, or set up a plunge.
+- **Plunge / down-attack** — aerial strike onto the shell from above.
+- **Dash** — i-frames + the repositioning tool; how you get behind a crab.
 - **Stamina** — light, governs Heavy + Dash (so you can't just spam openings).
 - **Karcite weapons add a verb** — e.g. a glow-edge that *ignores* guard but feeds
   the Turning; gold-tempered (Sunbound) versions soften that cost. Combat plugs
@@ -424,7 +432,8 @@ comes from gear and growth.
 ---
 
 ## CANON DECIDED SO FAR
-- Genre: top-down ARPG → found a town → military campaign. *(player goal: build town + troops)*
+- Genre: **side-view action-platformer RPG** (run/jump/swing, Terraria/Hollow Knight
+  lineage) → found a town → military campaign. *(player goal: build town + troops)*
 - Three layers are **ages stacked by time**; descending = going back in time.
 - Antagonist army: the **KARCONS** — mutant crustaceans (mostly crabs).
 - Final boss: **KRAGGONOTH**, first-born of the Karcons.
@@ -458,9 +467,10 @@ comes from gear and growth.
   Pinchlings/Molted/Drowned Court, the Unturned + Delvers' Guild, Larkhollow,
   Deepgate, Brightstone/Sunbound Brightstone.
 - **Protagonist:** a **human teenager**, Delvers' Guild initiate (coming-of-age).
-- **Combat:** top-down **directional swing** + **crack-the-shell** — flank or punish
-  the raised claw; Shellbreaker cracks armor for a stagger window; light/heavy/dash
-  + stamina. Naming/tone whimsical-fantasy over a melancholy world.
+- **Combat:** side-view **run/jump + face-left/right swing** + **crack-the-shell** —
+  flank (jump over / dash behind), punish the raised claw, or plunge from above;
+  Shellbreaker cracks armor for a stagger window; light/heavy/jump/plunge/dash +
+  stamina. Naming/tone whimsical-fantasy over a melancholy world.
 - **Army:** you **delve solo**; troops are a **home garrison** (defend Larkhollow /
   Deepgate), not a delving squad. The town faces **occasional Karcon raids/sieges**.
 - **Recruiting:** **humans only** (Greenward folk, refugees, delvers). **The Molted
@@ -479,16 +489,18 @@ the town → descend → fight a crab the right way → grab loot → climb out 
 matter. If that 60-second loop feels good, everything else is worth building.
 
 **IN (v1):**
-- **Top-down movement** — convert the prototype from platformer physics to 8-dir
-  walking with wall collision. (Reuses our area/world/border engine as-is.)
-- **Swing + crack-the-shell combat** — light swing, charged Shellbreaker, dash
-  (i-frames), stamina. **One enemy: a Pinchling** that guards frontally so the
+- **Keep the platformer movement** we already built (gravity, jump, coyote, variable
+  jump) — *no genre switch.* Add **dash (i-frames)** and a **plunge/down-attack**.
+- **Swing + crack-the-shell combat** — light swing, charged Shellbreaker, jump-flank,
+  plunge, dash, stamina. **One enemy: a Pinchling** that guards frontally so the
   flank/punish loop is real.
 - **One Karcite-Searing hazard tile** (purple glow that damages you over time) — the
   signature "the pretty thing hurts" beat.
-- **A tiny Larkhollow** — a few buildings, one NPC, the safe hub you return to.
-- **One hand-made dungeon entrance → one short generated descent** (2–3 branching
-  levels, D2-style, with the down-stairs on one branch and loot in a dead-end).
+- **A tiny Larkhollow** — a side-scrolling hub on a hill with a couple buildings and
+  one NPC; the safe place you return to.
+- **One dungeon entrance → one short generated descent** — drop down a pit/stairs into
+  2–3 branching levels (Metroidvania-style: corridors up/down/left/right, down-stairs
+  on one branch, loot in a dead-end).
 - **Carry-loot + lose-on-death** — pick up Karcite/coin, die = lose it, exit = keep it.
 - Placeholder art (shapes/colors), like the current prototype.
 
@@ -497,8 +509,9 @@ raids, XP/skills, the Turning curse, water/Karium, the Abyss, multiple enemies,
 story/dialogue, sound. All have homes in the bible; none are needed to test the feel.
 
 **Why this slice:** it touches the three pillars that make or break the game —
-**movement, the shell-combat, and the descend-raid-return loop** — and nothing else.
-Cheap to build, brutally honest about whether the core is fun.
+**platforming movement, the shell-combat, and the descend-raid-return loop** — and
+nothing else. Cheap to build (we already have the movement), brutally honest about
+whether the core is fun.
 
 ## OPEN QUESTIONS *(for next conversation)*
 - [x] Generator unit: **branching multi-area levels, D2 Cloister style.** *(decided)*
