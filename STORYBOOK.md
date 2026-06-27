@@ -84,14 +84,27 @@ This gives us our difficulty curve *for free*:
 
 ---
 
-## THE COMET & THE ELEMENT
-The glowing element is the engine of everything — the mutation, the summoning,
-Kraggonoth's mind, the slow turning of the world. **Name it:** *(undecided)*
-**Karcite** · the **Pale Ember** · **Moltglow** · **Vyrr** · **Kragstone** · the
-**Wakelight**. It fell once, long ago, into the deepest dark — and it has been
-seeping upward through the ages ever since. *That upward seep is why the world
-turns to crab from the bottom up, and why the surface's time is finally running
-out.*
+## KARCITE — the comet element *(locked)*
+The glowing element is the engine of everything: the mutation, the summoning,
+Kraggonoth's mind, the slow turning of the world. It fell once, long ago, into the
+deepest dark, and it has seeped upward through the ages ever since. *That upward
+seep is why the world turns to crab from the bottom up, and why the surface's time
+is finally running out.*
+
+- **Looks:** a cold, pale-green glow inside black meteoric stone; veins of it run
+  through the deep rock and pulse faintly, like something breathing.
+- **What it does to crustaceans:** imbues — wakes, mutates, enlarges, enlists. The
+  raw fuel of the Karcon host. This is what Kraggonoth reaches *through* to summon.
+- **What it does to everything else:** the Groove — forces flesh slowly toward the
+  old shape. (This is the seed of the player's personal-carcinization curse.)
+- **What it does for YOU — the economy keystone:** refined, Karcite is power.
+  Delvers mine it from the deep; your town **refines** it; you forge it into
+  **weapons, walls, and troops.** The cruel irony of the war: *the only thing strong
+  enough to arm the Unturned is the same light that makes the Karcons.* Using it
+  risks turning. Every upgrade is a bargain with the enemy's own substance.
+  - raw **Karcite** (mined) → refined **Brightstone/ingots** (town) → gear & troops.
+  - deeper layers yield richer Karcite — so the war economy *pulls you downward,*
+    straight toward Kraggonoth. The map and the economy point the same way.
 
 ---
 
@@ -182,7 +195,7 @@ The campaign arc, which is also the genre arc:
 |---|---|
 | The villain (final boss) | **KRAGGONOTH** — *locked* |
 | The enemy army | the **KARCONS** — *locked* |
-| The comet element | **Karcite**, the **Pale Ember**, **Moltglow**, **Vyrr**, **Kragstone**, the **Wakelight** |
+| The comet element | **KARCITE** — *locked* (refined form: Brightstone / ingots — tbd) |
 | The sea / abyss | the **Brine**, the Underbrine, the Pale Brine, the Mother-Brine |
 | The law/curse | **Carcinization**, the **Groove**, the Turning, the Old Shape |
 | Surface Karcons (tier 1) | Pinchlings, Scuttle, the glow-touched |
@@ -198,16 +211,17 @@ The campaign arc, which is also the genre arc:
 - Three layers are **ages stacked by time**; descending = going back in time.
 - Antagonist army: the **KARCONS** — mutant crustaceans (mostly crabs).
 - Final boss: **KRAGGONOTH**, first-born of the Karcons.
-- Origin engine: a **comet fell into the sea**; its **glowing element** woke a
+- Origin engine: a **comet fell into the sea**; its element **KARCITE** woke a
   regular crab into Kraggonoth (mind + power) and **imbues** crustaceans into Karcons.
   He summons the host still, from the Abyss, endlessly.
-- The element is the physical cause of **carcinization** (the Groove); it seeps up
+- **Karcite** is the physical cause of **carcinization** (the Groove); it seeps up
   from the deep over ages — deeper = more imbued = stronger.
+- **Karcite is also the resource economy:** mine → refine → arm. Using the enemy's
+  own substance to fight it; the economy pulls the player downward toward Kraggonoth.
 - Tone: melancholy / mythic.
 
 ## OPEN QUESTIONS *(for next conversation)*
-- [ ] **Name the comet element** (Karcite / Pale Ember / Moltglow / Vyrr / ...).
-- [ ] Lock remaining names (sea, curse, town, your faction).
+- [ ] Lock remaining names (sea, curse, town, your faction, refined-Karcite).
 - [ ] Is the player human, a Molted who turned back, or something else?
 - [ ] Does the personal-carcinization curse mechanic go in v1, or later?
 - [ ] Combat: melee confirmed — but what *kind* (Zelda swing / souls stamina / dodge-roll)?
