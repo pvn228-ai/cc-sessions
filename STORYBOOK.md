@@ -279,7 +279,21 @@ You can't just delve anymore. You have to **hold ground.**
 
 ---
 
-## YOU — Delver, then Founder, then Commander
+## YOU — a human teenager *(at first)*
+You begin as an **ordinary human teen** from a **Greenward** village — a Delvers'
+Guild **initiate**, too young for a real descent, who gets pulled into one anyway
+when the signs start and an elder doesn't come back up. Coming-of-age is the spine
+of the *character* the way descent is the spine of the *world.*
+
+Why a teen matters:
+- **The Turning hits harder.** It's your *youth* calcifying — the body-horror is
+  personal and unfair in a way it wouldn't be for a grizzled veteran.
+- **You grow on every axis** — skill, the role you carry (initiate → delver →
+  founder of Larkhollow → commander of the Unturned), and how the world treats you.
+- *"At first"* is a promise: who/what you become by the Brinedeep is an open thread
+  (older, hardened, half-turned, or something the Brine has never seen).
+
+## THE ARC — Delver, then Founder, then Commander
 The campaign arc, which is also the genre arc:
 
 1. **DELVER (action-RPG).** Alone. Sword, exploration, the first horror of meeting
@@ -305,19 +319,57 @@ The campaign arc, which is also the genre arc:
 
 ---
 
-## NAMING TABLE *(pick favorites — nothing locked yet)*
+## COMBAT — directional swing + crack-the-shell *(locked: core feel)*
+
+**Base:** top-down, **face a direction and swing** (Zelda / Hyper Light Drifter).
+Fast, readable, no auto-aim — you hit the arc in front of you. But every enemy is a
+**crab**, so the depth comes from the one thing they all have: **a shell and raised
+claws.** You don't just trade hits — you *open* them up.
+
+**The signature loop — shells & guard:**
+- **Frontal guard.** Karcons face you claws-up. A swing into a raised guard **chips
+  for little and bounces you** — mashing the front is a trap.
+- **Open the opening.** Two clean answers, both about *positioning and timing*:
+  1. **Flank it** — strike the **side/back** (soft joints) for full damage. Rewards
+     movement, kiting, dashing *through* an attack to its blind side.
+  2. **Punish the claw** — when it **raises a claw to attack**, the guard drops; hit
+     the window. Rewards reading tells (light parry/bait feel, no hard parry timing).
+- **Crack the carapace.** Bigger Karcons need their **shell broken first**: land
+  hits / a charged **Shellbreaker** to crack the plate, exposing flesh and a
+  **stagger window** of bonus damage (Monster-Hunter-part-break, but lightweight).
+
+**The kit (small, expressive):**
+- **Light swing** — fast directional arc, cheap. Your bread and butter.
+- **Heavy / charged "Shellbreaker"** — slow wind-up, breaks guard & cracks shell;
+  costs stamina, leaves you exposed. Commitment.
+- **Dash / roll** — i-frames + the repositioning tool; how you get to the flank.
+- **Stamina** — light, governs Heavy + Dash (so you can't just spam openings).
+- **Karcite weapons add a verb** — e.g. a glow-edge that *ignores* guard but feeds
+  the Turning; gold-tempered (Sunbound) versions soften that cost. Combat plugs
+  straight into the economy/curse.
+
+**Teen flavor:** nimble over strong — you start dash-light and slappy, more about
+**reading and dancing around claws** than out-muscling them. Power (and weight)
+comes from gear and growth.
+
+## NAMING TABLE *(remaining candidates — most things now locked above)*
 | thing | candidates |
 |---|---|
 | The villain (final boss) | **KRAGGONOTH** — *locked* |
 | The enemy army | the **KARCONS** — *locked* |
-| The comet element | **KARCITE** — *locked* (refined form: Brightstone / ingots — tbd) |
-| The sea / abyss | the **Brine**, the Underbrine, the Pale Brine, the Mother-Brine |
-| The law/curse | **Carcinization**, the **Groove**, the Turning, the Old Shape |
-| Surface Karcons (tier 1) | Pinchlings, Scuttle, the glow-touched |
-| Lower Karcons (tier 2) | the **Molted**, Claw-knights, the Carapaced |
-| Abyss Karcons (tier 3) | Shellwrights, Leviathan crabs, the Drowned Court |
-| Your faction | the **Unturned**, the Dry, the Delvers' Guild |
-| Your town | **Driftward**, Lastdry, Highmark |
+| The comet element (raw) | **KARCITE** — *locked* |
+| Karcite refined / tempered | **Brightstone** (refined) · **Sunbound Brightstone** (gold-tempered) — *locked* |
+| The primal sea / element source | the **Brine** — *locked* |
+| The curse / law | the **Turning** (folk: "going crab," "the crabbing") — *locked* |
+| Surface (in-world name) | the **Greenward** — *locked* |
+| Lower (in-world name) | the **Drownways** — *locked* |
+| Abyss (in-world name) | the **Brinedeep** — *locked* |
+| Surface Karcons (tier 1) | **Pinchlings** — *locked* |
+| Lower Karcons (tier 2) | the **Molted** — *locked* |
+| Abyss Karcons (tier 3) | the **Drowned Court** — *locked* |
+| Your faction | the **Unturned** (guild: the **Delvers' Guild**) — *locked* |
+| Home town | **Larkhollow** — *locked* |
+| Forward base (optional, later) | **Deepgate** — *locked* |
 
 ---
 
@@ -344,15 +396,22 @@ The campaign arc, which is also the genre arc:
   base); other settlements are NPC-owned.
 - **Military arc:** defend your town(s), raid the depths for Karcite/strength, then a
   one-way assault on the Abyss. No territory-holding underground.
-- Tone: melancholy / mythic.
+- **Names locked:** Brine, the Turning, Greenward/Drownways/Brinedeep,
+  Pinchlings/Molted/Drowned Court, the Unturned + Delvers' Guild, Larkhollow,
+  Deepgate, Brightstone/Sunbound Brightstone.
+- **Protagonist:** a **human teenager**, Delvers' Guild initiate (coming-of-age).
+- **Combat:** top-down **directional swing** + **crack-the-shell** — flank or punish
+  the raised claw; Shellbreaker cracks armor for a stagger window; light/heavy/dash
+  + stamina. Naming/tone whimsical-fantasy over a melancholy world.
+- Tone: melancholy / mythic, whimsical names.
 
 ## OPEN QUESTIONS *(for next conversation)*
-- [x] Generator unit: **branching multi-area levels, D2 Cloister style** — one
-      critical path to the down-stairs, dead-ends hold the loot. *(decided)*
-- [ ] Lock remaining names (sea, curse, town, your faction, refined-Karcite).
-- [ ] Is the player human, a Molted who turned back, or something else?
-- [ ] Does the personal-carcinization curse mechanic go in v1, or later?
-- [ ] Combat: melee confirmed — but what *kind* (Zelda swing / souls stamina / dodge-roll)?
-- [ ] How do layer transitions work in fiction (stairs? sinkholes? a Delvers' lift?).
+- [x] Generator unit: **branching multi-area levels, D2 Cloister style.** *(decided)*
+- [x] Lock remaining names. *(done)*
+- [x] Player identity: **human teen, guild initiate.** *(decided)*
+- [x] Combat kind: **directional swing + crack-the-shell.** *(decided)*
+- [ ] Does the personal-Turning curse mechanic go in v1, or later?
 - [ ] Tone check: how dark do the Molted get — pitiable, or genuinely frightening?
 - [ ] Kraggonoth — does the player ever *meet* him before the end (taunts, a herald)?
+- [ ] Sketch the opening 10 minutes (the inciting delve).
+- [ ] **Start building:** convert the prototype to top-down + combat + first town?
