@@ -107,6 +107,21 @@ is finally running out.*
   **Sunbound (gold-tempered) gear / wards** blunt the Searing — so surviving the deep
   **Brinedeep at all requires investment.** You can't just sprint to the bottom; the
   hazard itself paces progression toward Kraggonoth.
+
+### KARIUM — liquid Karcite *(Brinedeep water, locked)*
+The flooded Brinedeep isn't just water — it's water that has **drunk so much Karcite
+it has become the element in liquid form:** **Karium**, a glowing purple brew. (Lore:
+the comet fell into the *sea*, so the first thing it imbued was water — Karium is the
+oldest Karcite there is. The purest pools sit deepest, around Kraggonoth.)
+
+- **A second crafting form.** Solid Karcite forges; **liquid Karium does what solids
+  can't** — *quench/temper baths* (cool a blade in Karium to forge Karcite weapons),
+  *glow-oils & coatings* (apply the ignore-guard edge to any weapon), *alchemical
+  tonics* (risky buffs), and *charging* copper conduits, wards, and Sunbound gear.
+- **Harvested, not mined.** You **bottle** it from flooded hotspots — and drawing it
+  means standing in the **Searing**, so even gathering it is a risk/greed beat.
+- **Still poison.** Karium Sears like raw Karcite (and worse if you *drink* the wrong
+  tonic). It's potent, useful, and dangerous — pure liquid Turning.
 - **What it does for YOU — the economy keystone:** refined, Karcite is power.
   Delvers mine it from the deep; your town **refines** it; you forge it into
   **weapons, walls, and troops.** The cruel irony of the war: *the only thing strong
@@ -176,8 +191,9 @@ authored *pieces*.
 
 ### The Brinedeep (Abyss) — biome notes
 The deepest layer alternates between two looks, mixed per generated stretch:
-- **Flooded** — water-filled caverns and drowned halls (slows movement, limits
-  sight, hides things below the surface; home to the Drowned Court's worst).
+- **Flooded** — caverns and drowned halls filled with **Karium** (liquid Karcite):
+  slows movement, limits sight, hides things below; **Sears** you, and can be
+  **bottled** as a crafting resource. Home to the Drowned Court's worst.
 - **Caves** — raw dry rock, natural caverns, chitin growths and shell-cathedrals.
 - **Lit purple by Karcite.** Much of the Brinedeep has no light but the **purple
   glow** of Karcite veins and pools — beautiful, and a **damage hazard** (the
@@ -412,6 +428,9 @@ comes from gear and growth.
   + Sunbound/wards protect; surviving the deep Brinedeep requires that investment.
 - **Brinedeep biomes:** alternating **flooded** caverns and dry **caves**, lit by
   purple Karcite glow; more glow = more loot + more Searing.
+- **Karium** = Karcite-infused Brinedeep water (liquid form of the element). A second
+  crafting resource: bottled from flooded pools for quench-baths, glow-oils, tonics,
+  and charging conduits/wards. Sears like raw Karcite.
 - **World gen:** Surface is authored & persistent; **Lower & Abyss are procedurally
   generated.** **Entry points set the run's length/depth, size, danger, richness** —
   bigger mouth → longer, deeper, richer, deadlier. Generation = procedural
