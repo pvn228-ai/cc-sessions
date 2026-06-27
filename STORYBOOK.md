@@ -108,6 +108,47 @@ is finally running out.*
 
 ---
 
+## WORLD GENERATION — authored Surface, procedural depths
+
+- **SURFACE — authored & persistent.** Hand-built area-graph: your towns, your
+  base, fixed geography, the world you defend. It never regenerates. *(This is the
+  `world_data` map we already prototyped.)*
+- **LOWER & ABYSS — procedurally generated.** Each descent builds a fresh
+  area-graph from a seed. Reuses the same engine we already have (screen-sized
+  areas linked at borders); the generator just *produces* the area layout, tiles,
+  enemies, and Karcite/loot instead of reading them from a file.
+
+### Entry points are the dial
+You descend through **entrances** on the Surface (sinkholes, ruins, a Delvers'
+lift). **The entrance defines the run** it generates:
+
+- **Length / Depth** — how many area-levels deep it goes (how far toward the Abyss).
+- **Size / Breadth** — how sprawling each level is (how many areas per level).
+- **Danger** — enemy tier & density, which scales with depth.
+- **Richness** — Karcite/ore/gold yield, also scaling with depth.
+- **Theme** — tileset & room templates (Lower = drowned cities of the last age;
+  Abyss = older, organic, alien, crab).
+
+So a small surface crack = a short, shallow, low-risk dig; a yawning ruin-mouth =
+a long, deep, deadly expedition that may break through into the **Abyss** at the
+bottom. **Bigger mouth → longer, deeper, richer, deadlier.** The player reads the
+entrance and *chooses the expedition's scale.*
+
+### Generation flavor (keep the melancholy)
+Use **room/area templates** per theme so the depths feel *built, then drowned*, not
+random noise — flooded temple halls, collapsed libraries, streets under silt in the
+Lower; cave-cathedrals and chitin growths in the Abyss. Procedural *arrangement* of
+authored *pieces*.
+
+### OPEN — the persistence model *(the big fork, see questions)*
+Do generated dungeons **regenerate** each descent (roguelike: fresh loot, replay,
+Karcite farming), **persist** once cleared (strategic: you hold and fortify
+reclaimed territory — fits the "reclaim the Lower" military arc), or **hybrid**
+(story/claimed digs persist & can be fortified; unstable "rifts" regenerate for
+farming and defense waves)? *Leaning hybrid.*
+
+---
+
 ## RESOURCES & CRAFTING — the world economy
 
 Two tiers of material: **mundane** (what builds a town and arms a militia) and
@@ -259,9 +300,15 @@ The campaign arc, which is also the genre arc:
   and crafted into goods/gear/troops. **Karcite** is the rare magic tier on top.
 - **Economy as moral dial:** raw Karcite = strong-but-corrupting; **gold + copper
   conduits temper it** (safe but costly). War pulls the player deeper, toward Kraggonoth.
+- **World gen:** Surface is authored & persistent; **Lower & Abyss are procedurally
+  generated.** **Entry points set the run's length/depth, size, danger, richness** —
+  bigger mouth → longer, deeper, richer, deadlier. Generation = procedural
+  arrangement of authored room templates per theme.
 - Tone: melancholy / mythic.
 
 ## OPEN QUESTIONS *(for next conversation)*
+- [ ] **Dungeon persistence model:** regenerate / persist-&-fortify / hybrid (leaning hybrid).
+- [ ] Generator unit: per-area interiors, or multi-area "levels" stacked into depth?
 - [ ] Lock remaining names (sea, curse, town, your faction, refined-Karcite).
 - [ ] Is the player human, a Molted who turned back, or something else?
 - [ ] Does the personal-carcinization curse mechanic go in v1, or later?
