@@ -108,6 +108,45 @@ is finally running out.*
 
 ---
 
+## RESOURCES & CRAFTING — the world economy
+
+Two tiers of material: **mundane** (what builds a town and arms a militia) and
+**Karcite** (the dangerous magic on top). You gather raw, refine at town
+buildings, and craft up into goods, gear, and troops.
+
+### The six world resources
+| resource | gathered from | refines into | used for |
+|---|---|---|---|
+| **Wood** | forests (Surface) | planks, **charcoal** (smelting fuel) | buildings, shafts, bows, scaffolding |
+| **Stone** | quarries / deep rock | blocks, **mortar** (w/ lime) | walls, foundations, roads, whetstones |
+| **Flax** | farmed fields (Surface) | fiber → thread → **linen cloth**, **rope** | padding/gambeson, sails, bandages, bowstrings |
+| **Iron** | ore, mined (Lower-rich) | **iron ingots** (ore + charcoal) | weapons, armor, tools, nails, hinges |
+| **Copper** | ore, mined (shallow→Lower) | **copper ingots** | early tools, fittings, **Karcite conduits** |
+| **Gold** | deep veins / rivers (deepest) | **gold ingots**, **coin** | currency & trade — *and tempering Karcite (see below)* |
+
+### Crafting flows (raw → intermediate → item)
+- **Wood** → planks (build) / charcoal (the fuel everything smelts with).
+- **Stone** → blocks + mortar → walls & buildings (the town's defense).
+- **Flax** → fiber → thread → linen → **gambeson** (armor padding) & **rope** &
+  **bowstrings**. Soft economy, but every soldier needs it.
+- **Iron** ore + charcoal → ingots → **arms & armor** (the militia's backbone).
+- **Copper** ore + charcoal → ingots → cheap tools early; later, **conduits** that
+  carry Karcite safely through a weapon or wall.
+- **Gold** → coin (buy/sell/recruit) **and the key trick below.**
+
+### The clever knot — gold tempers Karcite *(ties economy → curse → boss)*
+Raw **Karcite** makes the strongest gear in the game, but wielding it **spreads the
+Groove** — your troops (and you) slowly start to turn. **Gold + copper conduits can
+*temper* Karcite,** binding the glow so it empowers without corrupting — at a cost,
+because gold is the rarest, deepest resource.
+
+So the whole economy becomes a **moral dial**: cheap raw-Karcite gear = strong now,
+turning later; gold-tempered gear = safe but expensive and slow. *The more war you
+wage, the deeper you must mine, the closer you get to Kraggonoth — exactly as he
+wants.*
+
+---
+
 ## THE LAW OF CARCINIZATION — *the world's grain, now lit by the element*
 > The comet's element is the **physical cause** of the Groove: it forces living
 > things into the old shape, faster and more completely the more of it touches them.
@@ -216,8 +255,10 @@ The campaign arc, which is also the genre arc:
   He summons the host still, from the Abyss, endlessly.
 - **Karcite** is the physical cause of **carcinization** (the Groove); it seeps up
   from the deep over ages — deeper = more imbued = stronger.
-- **Karcite is also the resource economy:** mine → refine → arm. Using the enemy's
-  own substance to fight it; the economy pulls the player downward toward Kraggonoth.
+- **World resources:** Wood, Stone, Flax, Iron, Copper, Gold — gathered, refined,
+  and crafted into goods/gear/troops. **Karcite** is the rare magic tier on top.
+- **Economy as moral dial:** raw Karcite = strong-but-corrupting; **gold + copper
+  conduits temper it** (safe but costly). War pulls the player deeper, toward Kraggonoth.
 - Tone: melancholy / mythic.
 
 ## OPEN QUESTIONS *(for next conversation)*
