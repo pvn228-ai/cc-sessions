@@ -5,8 +5,9 @@ A side-view action-platformer RPG built with pygame. You play a human teen of th
 crack the guarding crabs (the **Karcons**), and climb out with your haul — because
 if you die down there, you lose what you carried.
 
-This repo currently contains the **v1 vertical slice**: the core
-descend → raid → return loop. The full design lives in [`STORYBOOK.md`](STORYBOOK.md).
+This repo currently contains **v1.1**: the core descend → raid → return loop,
+plus the part that makes it matter — XP, levels, and gear forged from what you
+carry home. The full design lives in [`STORYBOOK.md`](STORYBOOK.md).
 
 ## Run it
 
@@ -25,7 +26,8 @@ python main.py
 | Shellbreaker (heavy) | `K` |
 | Plunge (in air) | hold `↓` + `J` |
 | Dash (i-frames) | `Shift` |
-| Interact (talk / descend / climb out) | `E` |
+| Interact (talk / forge / descend / climb out) | `E` |
+| At the Forge: choose / buy / leave | `W`·`S` / `Enter` / `E` |
 
 ## The combat, in one breath
 
@@ -38,11 +40,19 @@ with a **Shellbreaker** for a stagger window.
 
 - Platformer movement + dash + plunge
 - Swing / Shellbreaker / crack-the-shell combat vs the **Pinchling**
+- The plated **Clawknight** from Depth 2 — a Lower Karcon whose carapace shrugs
+  off flanks and light swings until you **breach it** with Shellbreakers or plunges
 - Purple **Karcite Searing** hazard (the pretty thing hurts you)
 - A hillside **Larkhollow** hub with an NPC and the dungeon entrance
 - A procedurally generated descent: a **hub with two branches**, only one holding
   the stairs down (D2-Cloister style), loot in the dead-end
 - Carry-loot, **lose it on death**, bank it by climbing out
+- **XP and levels** from every Karcon you fell — a level is a heart, and unlike
+  the haul, death never takes it back
+- The **Sunbound Forge** in town: spend banked Karcite and coin on three gear
+  tracks — *Honed Edge* (damage), *Sunbound Ward* (hearts + slower Searing),
+  *Tidestep Boots* (cheaper, quicker dash)
+- All of it **persists between runs** in a save file
 
 ## Tests
 
@@ -58,12 +68,16 @@ python smoke_test.py
 main.py             entry point
 game/
   settings.py       all tunable constants
+  progress.py       the bank, XP/levels, gear tracks, and the save file
   player.py         platformer body + combat kit
-  entities.py       tiles, Karcite hazard, loot, props, the Pinchling
+  entities.py       tiles, Karcite hazard, loot, props, the Karcons
   area.py           Room: parses a screen, draws it, resolves combat
   world.py          the authored Surface scene
   world_data.py     Larkhollow + the Old Road (ASCII)
   dungeon.py        the procedural descent generator
-  game.py           window, loop, scenes, HUD, the run loop
+  game.py           window, loop, scenes, HUD, the Forge, the run loop
 STORYBOOK.md        the full story & design bible
 ```
+
+Progress is saved to `~/.larkhollow/save.json` — set `LARKHOLLOW_SAVE` to put it
+somewhere else (the tests do this so they never touch your delver).

@@ -1,5 +1,5 @@
 """World entities: tiles, the Karcite Searing hazard, loot, props, and the
-Pinchling enemy.
+Karcons — the scuttling Pinchling and the plated Clawknight.
 
 Drawing lives on each entity; the active Room applies a (currently zero) screen
 offset at draw time. Gameplay logic that needs to see the player (enemy AI,
@@ -10,6 +10,7 @@ import math
 
 import pygame
 
+from . import progress
 from . import settings as cfg
 
 
@@ -95,13 +96,13 @@ class Prop(pygame.sprite.Sprite):
     def __init__(self, x, y, kind, w=cfg.TILE_SIZE, h=cfg.TILE_SIZE, line=None):
         super().__init__()
         self.rect = pygame.Rect(x, y, w, h)
-        self.kind = kind            # "npc" | "entrance" | "stairs"
+        self.kind = kind            # "npc" | "smith" | "entrance" | "stairs" | "exit"
         self.line = line            # dialogue for npc
 
     @property
     def prompt(self):
-        return {"npc": "talk", "entrance": "descend", "stairs": "go down",
-                "exit": "climb out"}.get(self.kind, "use")
+        return {"npc": "talk", "smith": "the Sunbound Forge", "entrance": "descend",
+                "stairs": "go down", "exit": "climb out"}.get(self.kind, "use")
 
     def draw(self, surface, offset):
         r = self.rect.move(offset)
@@ -109,6 +110,17 @@ class Prop(pygame.sprite.Sprite):
             body = pygame.Rect(r.centerx - 9, r.bottom - 26, 18, 26)
             pygame.draw.rect(surface, cfg.NPC_COLOR, body, border_radius=6)
             pygame.draw.circle(surface, cfg.NPC_COLOR, (r.centerx, r.bottom - 30), 8)
+        elif self.kind == "smith":
+            # The forgemaster, and the anvil she works the Brightstone on.
+            body = pygame.Rect(r.centerx - 10, r.bottom - 26, 20, 26)
+            pygame.draw.rect(surface, cfg.SMITH_COLOR, body, border_radius=6)
+            pygame.draw.circle(surface, cfg.SMITH_COLOR, (r.centerx, r.bottom - 30), 8)
+            anvil = pygame.Rect(r.centerx + 12, r.bottom - 14, 18, 8)
+            pygame.draw.rect(surface, (90, 92, 104), anvil, border_radius=2)
+            pygame.draw.rect(surface, (70, 72, 84),
+                             (anvil.centerx - 3, anvil.bottom, 6, 6))
+            pygame.draw.circle(surface, cfg.KARCITE_GLOW,
+                               (anvil.centerx, anvil.top - 3), 3)
         elif self.kind == "entrance":
             pygame.draw.ellipse(surface, cfg.ENTRANCE_COLOR,
                                 (r.x, r.y + r.height // 3, r.width, r.height * 2 // 3))
@@ -131,17 +143,34 @@ class Prop(pygame.sprite.Sprite):
             pygame.draw.rect(surface, (120, 160, 200), (r.x, r.y, r.width, 4))
 
 
-# ----------------------------------------------------------------------- Pinchling
-class Pinchling(pygame.sprite.Sprite):
-    """A guarding crab. Faces the player, claws up. Front swings bounce off the
-    guard; you must FLANK it, PUNISH its claw wind-up, PLUNGE from above, or crack
-    its shell with a Shellbreaker (heavy) to open a stagger window."""
+# ------------------------------------------------------------------------ Karcons
+class Karcon(pygame.sprite.Sprite):
+    """Shared crab: guards frontally, patrols, telegraphs a claw, takes hits by
+    the shell rules. Subclasses set the stat block and the look."""
+
+    hp_max = cfg.PINCHLING_HP
+    speed = cfg.PINCHLING_SPEED
+    touch_damage = cfg.PINCHLING_TOUCH_DAMAGE
+    stagger_frames = cfg.PINCHLING_STAGGER_FRAMES
+    windup_frames = cfg.PINCHLING_WINDUP_FRAMES
+    lunge_frames = cfg.PINCHLING_LUNGE_FRAMES
+    lunge_speed = cfg.PINCHLING_LUNGE_SPEED
+    attack_cooldown = cfg.PINCHLING_ATTACK_COOLDOWN
+    xp_value = progress.XP_PINCHLING
+    drops = (("karcite", 1),)   # what it sheds when it falls
+    plate_hits = 0          # >0 == armoured: that many crack-hits to breach the plate
+    inset = (4, 12)         # how much smaller than a tile the body is (x, y)
+    body_color = cfg.PINCHLING_COLOR
+    shell_color = cfg.PINCHLING_SHELL_COLOR
 
     def __init__(self, x, y, theme="surface"):
         super().__init__()
-        self.rect = pygame.Rect(x + 4, y + 12, cfg.TILE_SIZE - 8, cfg.TILE_SIZE - 12)
+        ix, iy = self.inset
+        self.rect = pygame.Rect(x + ix, y + iy,
+                                cfg.TILE_SIZE - ix * 2, cfg.TILE_SIZE - iy)
         self.theme = theme
-        self.hp = cfg.PINCHLING_HP
+        self.hp = self.hp_max
+        self.plate = self.plate_hits    # remaining armour on the carapace
         self.facing = -1
         self.vel = pygame.Vector2(0, 0)
         self.on_ground = False
@@ -162,20 +191,23 @@ class Pinchling(pygame.sprite.Sprite):
         """Guard is down (punishable): mid wind-up or staggered."""
         return self._windup > 0 or self._stagger > 0
 
+    def armoured(self):
+        return self.plate > 0
+
     # ------ taking a hit from the player
     def receive(self, damage, attack_type, attacker_centerx):
         """Decide whether a player attack lands, per the shell rules. Returns
         True if damage was applied (so the swing consumes its hit)."""
         attacker_side = 1 if attacker_centerx >= self.rect.centerx else -1
         from_front = attacker_side == self.facing
+        cracker = attack_type in ("heavy", "plunge")
 
         if attack_type == "plunge":
             applied = True                      # from above, ignores guard
         elif attack_type == "heavy":
             applied = True                      # Shellbreaker always lands...
-            if from_front and not self.open():
-                self._stagger = cfg.PINCHLING_STAGGER_FRAMES   # ...and cracks the shell
-                self._windup = self._lunge = 0
+            if from_front and not self.open() and not self.armoured():
+                self._crack()                   # ...and cracks the shell
         elif not from_front:
             applied = True                      # flank to the soft joints
         elif self.open():
@@ -183,14 +215,31 @@ class Pinchling(pygame.sprite.Sprite):
         else:
             applied = False                     # bounced off the frontal guard
 
-        if applied:
-            self.hp -= damage
-            self._flash = 6
-            self.rect.x += -attacker_side * 7   # knock away from the blow
-            if self.hp <= 0:
-                self.dead = True
-                self.kill()
-        return applied
+        if not applied:
+            return False
+
+        self._flash = 6
+        self.rect.x += -attacker_side * 7       # knock away from the blow
+        if self.armoured():
+            # Plated Karcons shrug off flesh damage until the plate is breached;
+            # only Shellbreakers and plunges chew through it.
+            if cracker:
+                self.plate -= 1
+                if self.plate <= 0:
+                    self._crack()
+            return True
+
+        self.hp -= damage
+        if self.hp <= 0:
+            self.dead = True
+            self.kill()
+        return True
+
+    def _crack(self):
+        """The plate gives: guard drops, and the soft body is open for a while."""
+        self.plate = 0
+        self._stagger = self.stagger_frames
+        self._windup = self._lunge = 0
 
     def touches(self, player):
         """Contact damage — except while staggered (you've earned the opening)."""
@@ -225,29 +274,29 @@ class Pinchling(pygame.sprite.Sprite):
 
         if self._lunge > 0:
             self._lunge -= 1
-            self.vel.x = self.facing * cfg.PINCHLING_LUNGE_SPEED
+            self.vel.x = self.facing * self.lunge_speed
             return
         if self._windup > 0:
             self._windup -= 1
             self.vel.x = 0
             if self._windup == 0:
-                self._lunge = cfg.PINCHLING_LUNGE_FRAMES   # claw drops -> lunge
-                self._cooldown = cfg.PINCHLING_ATTACK_COOLDOWN
+                self._lunge = self.lunge_frames        # claw drops -> lunge
+                self._cooldown = self.attack_cooldown
             return
 
         if aggro:
             self.facing = 1 if dx > 0 else -1
             if abs(dx) < cfg.TILE_SIZE * 2 and self._cooldown <= 0 and self.on_ground:
-                self._windup = cfg.PINCHLING_WINDUP_FRAMES   # telegraph: raise claw
+                self._windup = self.windup_frames      # telegraph: raise claw
                 self.vel.x = 0
             else:
-                self.vel.x = self.facing * cfg.PINCHLING_SPEED
+                self.vel.x = self.facing * self.speed
         else:
             self._patrol(player)
 
     def _patrol(self, _player):
         self.facing = self._patrol_dir
-        self.vel.x = self._patrol_dir * cfg.PINCHLING_SPEED
+        self.vel.x = self._patrol_dir * self.speed
 
     def _resolve(self, tiles, axis):
         for tile in tiles:
@@ -274,24 +323,61 @@ class Pinchling(pygame.sprite.Sprite):
         elif self.staggered():
             color = cfg.PINCHLING_STAGGER_COLOR
         else:
-            color = cfg.PINCHLING_COLOR
+            color = self.body_color
         pygame.draw.ellipse(surface, color, r)
         # shell ridge
-        pygame.draw.arc(surface, cfg.PINCHLING_SHELL_COLOR,
+        pygame.draw.arc(surface, self.shell_color,
                         (r.x, r.y - 4, r.width, r.height), 3.3, 6.1, 3)
+        if self.armoured():
+            # Intact plate: a hard rim plus a stud per remaining crack-hit, so you
+            # can read at a glance how much Shellbreaker the thing still needs.
+            pygame.draw.ellipse(surface, cfg.PLATE_COLOR, r, 2)
+            span = r.width // (self.plate + 1)
+            for i in range(self.plate):
+                pygame.draw.circle(surface, cfg.PLATE_COLOR,
+                                   (r.x + span * (i + 1), r.centery - 4), 3)
         # eyes (on stalks, toward facing)
         ex = r.centerx + self.facing * 6
         ey = r.y + 4
         for s in (-5, 5):
-            pygame.draw.line(surface, cfg.PINCHLING_SHELL_COLOR, (r.centerx + s, r.y + 6),
+            pygame.draw.line(surface, self.shell_color, (r.centerx + s, r.y + 6),
                              (ex + s, ey - 4), 2)
             pygame.draw.circle(surface, (250, 250, 250), (ex + s, ey - 5), 3)
             pygame.draw.circle(surface, (20, 20, 20), (ex + s, ey - 5), 1)
         # a claw, raised when winding up (guard down = your moment)
         claw_y = r.y - 6 if self._windup > 0 else r.centery
-        cx = r.right + 4 if self.facing > 0 else r.left - 4
-        pygame.draw.circle(surface, cfg.PINCHLING_SHELL_COLOR, (cx, claw_y), 7)
+        claw_r = 7 + (2 if self.hp_max > cfg.PINCHLING_HP else 0)
+        cx = r.right + claw_r - 3 if self.facing > 0 else r.left - claw_r + 3
+        pygame.draw.circle(surface, self.shell_color, (cx, claw_y), claw_r)
         if not self.open():
             # guard shimmer in front
             gx = r.right + 2 if self.facing > 0 else r.left - 2
             pygame.draw.line(surface, (220, 200, 210), (gx, r.y), (gx, r.bottom), 1)
+
+
+class Pinchling(Karcon):
+    """The spillover: a small, barely-changed scuttler. Guards frontally, but its
+    shell is thin — a Shellbreaker cracks it in one blow."""
+
+
+class Clawknight(Karcon):
+    """A Lower Karcon: a fully imbued claw-knight in intact plate.
+
+    Flanks and light swings only clatter off the armour — you must breach the
+    plate with Shellbreakers or plunges first, and *then* the soft body (and the
+    flank/punish loop you already know) is worth anything."""
+
+    hp_max = cfg.CLAWKNIGHT_HP
+    speed = cfg.CLAWKNIGHT_SPEED
+    touch_damage = cfg.CLAWKNIGHT_TOUCH_DAMAGE
+    stagger_frames = cfg.CLAWKNIGHT_STAGGER_FRAMES
+    windup_frames = cfg.CLAWKNIGHT_WINDUP_FRAMES
+    lunge_frames = cfg.CLAWKNIGHT_LUNGE_FRAMES
+    lunge_speed = cfg.CLAWKNIGHT_LUNGE_SPEED
+    attack_cooldown = cfg.CLAWKNIGHT_ATTACK_COOLDOWN
+    xp_value = progress.XP_CLAWKNIGHT
+    drops = (("karcite", 2), ("coin", 1))
+    plate_hits = cfg.CLAWKNIGHT_PLATE
+    inset = (2, 6)
+    body_color = cfg.CLAWKNIGHT_COLOR
+    shell_color = cfg.CLAWKNIGHT_SHELL_COLOR

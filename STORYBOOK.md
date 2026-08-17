@@ -530,3 +530,30 @@ whether the core is fun.
       dash combat, the Pinchling shell loop, purple Karcite Searing, hillside
       Larkhollow + NPC, procedural hub+2-branch descent (one stairway), carry-loot +
       lose-on-death. Runs (`python main.py`); headless tests pass (`python smoke_test.py`).
+- [x] **v1.1 — the haul matters** — BUILT. See below.
+- [ ] Skill tree (the third leg of progression) — *next.*
+- [ ] Does the Forge sell **raw-Karcite gear** that feeds the Turning, alongside the
+      Sunbound line? (The moral dial, made mechanical.) *(not yet — later)*
+
+## v1.1 — THE HAUL MATTERS *(built)*
+v1 proved the loop was fun; it just didn't *pay*. v1.1 closes the circle: what you
+climb out with becomes what you are. Two of the three locked progression legs
+(**gear** and **XP/levels**) are in; the **skill tree** is still deferred.
+
+- **XP & levels.** Every Karcon you fell pays XP; a level is a heart and a little
+  more wind. **Loot is lost on death — levels never are.** The run can fail; the
+  delver still grows. (Kills also shed a Karcite shard, so fighting pays into the
+  haul instead of only costing HP.)
+- **The Sunbound Forge.** An anvil in Larkhollow turns the bank into gear across
+  three tracks, three tiers each: **Honed Edge** (damage on every attack),
+  **Sunbound Ward** (a heart, and the Searing burns measurably slower — the
+  "protection gates depth" rule, made real), **Tidestep Boots** (a cheaper, quicker
+  dash). Gold-tempered *Sunbound* naming is deliberate: this is the safe, expensive
+  line. The raw-Karcite line — strong now, Turning later — is the open question above.
+- **The Clawknight (Depth 2+).** The first **Lower Karcon**: fully imbued, purple,
+  and *plated*. Flanks and light swings clatter off intact plate; you must breach it
+  with **Shellbreakers or plunges** first, then the flank/punish loop you already
+  know is worth something. This is the "crack the carapace" tier the combat design
+  promised, and it's what makes the Honed Edge worth buying.
+- **Persistence.** Bank, level, XP, and gear survive between sessions in a save
+  file, so the town is a place you come back to rather than a respawn point.

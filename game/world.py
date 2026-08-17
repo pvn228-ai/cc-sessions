@@ -92,6 +92,8 @@ class World:
             return ("enter_dungeon",)
         if prop.kind == "npc":
             return ("dialogue", prop.line)
+        if prop.kind == "smith":
+            return ("forge",)
         return None
 
     def interact_prompt(self):

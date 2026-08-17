@@ -8,15 +8,16 @@ crossings are detected here but resolved by the caller, which knows the map.
 
 Glyph legend:
     #  solid tile        ^  Karcite hazard (Searing)   *  karcite loot
-    $  coin              E  Pinchling enemy            P  player spawn
-    N  NPC               D  dungeon entrance           >  stairs down
+    $  coin              E  Pinchling enemy            K  Clawknight (plated)
+    P  player spawn      N  NPC                        S  smith (the Forge)
+    D  dungeon entrance  >  stairs down                <  climb out
     (space) empty
 """
 
 import pygame
 
 from . import settings as cfg
-from .entities import Tile, Hazard, Loot, Prop, Pinchling
+from .entities import Tile, Hazard, Loot, Prop, Pinchling, Clawknight
 
 WEST, EAST, NORTH, SOUTH = "west", "east", "north", "south"
 
@@ -31,6 +32,7 @@ class Room:
         self.props = pygame.sprite.Group()
         self.spawn_tile = None
         self.entrance = None
+        self.smith = None
         self.stairs = None
         self.exit_prop = None
 
@@ -52,12 +54,17 @@ class Room:
                     self.loot.add(Loot(x, y, "coin", 1))
                 elif ch == "E":
                     self.enemies.add(Pinchling(x, y, theme))
+                elif ch == "K":
+                    self.enemies.add(Clawknight(x, y, theme))
                 elif ch == "P":
                     self.spawn_tile = (x, y)
                 elif ch == "N":
                     line = npc_lines[npc_i] if npc_i < len(npc_lines) else "..."
                     npc_i += 1
                     self.props.add(Prop(x, y, "npc", line=line))
+                elif ch == "S":
+                    self.smith = Prop(x, y, "smith")
+                    self.props.add(self.smith)
                 elif ch == "D":
                     self.entrance = Prop(x, y - cfg.TILE_SIZE, "entrance",
                                          h=cfg.TILE_SIZE * 2)
@@ -72,7 +79,7 @@ class Room:
     # ----------------------------------------------------------------- update
     def update(self, player):
         """Advance the room one frame. Returns a dict of events for the scene:
-        ``{"picked": [Loot,...]}``. Death is read from ``player.dead``."""
+        ``{"picked": [Loot,...], "xp": int}``. Death is read from ``player.dead``."""
         tiles = self.tiles.sprites()
         player.update(tiles)
         for enemy in self.enemies:
@@ -80,26 +87,38 @@ class Room:
         self.hazards.update()
         self.loot.update()
 
-        self._resolve_attacks(player)
+        xp = self._resolve_attacks(player)
         self._resolve_contact(player)
         self._resolve_searing(player)
         picked = self._resolve_pickups(player)
-        return {"picked": picked}
+        return {"picked": picked, "xp": xp}
 
     def _resolve_attacks(self, player):
+        """Apply the live attack hitbox. Returns XP earned from anything felled."""
         if player.attack_rect is None or player.attack_type is None:
-            return
+            return 0
+        xp = 0
         for enemy in list(self.enemies):
             if player.already_hit(enemy):
                 continue
             if player.attack_rect.colliderect(enemy.rect):
                 enemy.receive(player.attack_damage, player.attack_type, player.rect.centerx)
                 player.mark_hit(enemy)
+                if enemy.dead:
+                    xp += enemy.xp_value
+                    self._drop_loot(enemy)
+        return xp
+
+    def _drop_loot(self, enemy):
+        """A felled Karcon sheds what the element left in it."""
+        for i, (kind, value) in enumerate(enemy.drops):
+            self.loot.add(Loot(enemy.rect.centerx - cfg.TILE_SIZE // 2 + i * 14,
+                               enemy.rect.centery - cfg.TILE_SIZE // 2, kind, value))
 
     def _resolve_contact(self, player):
         for enemy in self.enemies:
             if enemy.touches(player):
-                player.take_hit(cfg.PINCHLING_TOUCH_DAMAGE, enemy.rect.centerx)
+                player.take_hit(enemy.touch_damage, enemy.rect.centerx)
 
     def _resolve_searing(self, player):
         for hz in self.hazards:
@@ -116,7 +135,7 @@ class Room:
         """The closest interactable prop within reach, or None."""
         best, best_d = None, 999999
         for prop in self.props:
-            if prop.kind not in ("npc", "entrance", "stairs", "exit"):
+            if prop.kind not in ("npc", "smith", "entrance", "stairs", "exit"):
                 continue
             d = abs(prop.rect.centerx - player.rect.centerx)
             if d < cfg.TILE_SIZE and abs(prop.rect.centery - player.rect.centery) < cfg.TILE_SIZE * 2:

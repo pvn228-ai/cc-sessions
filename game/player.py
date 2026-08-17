@@ -12,10 +12,11 @@ not need to know what it is hitting.
 import pygame
 
 from . import settings as cfg
+from .progress import Progress
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, progress=None):
         super().__init__()
         self.rect = pygame.Rect(x, y, cfg.TILE_SIZE - 12, cfg.TILE_SIZE - 4)
         self.spawn = (x, y)
@@ -23,8 +24,10 @@ class Player(pygame.sprite.Sprite):
         self.on_ground = False
         self.facing = 1
 
-        self.hp = cfg.PLAYER_MAX_HP
-        self.stamina = cfg.STAMINA_MAX
+        # Levels and gear live in Progress; a fresh one reports the base stats.
+        self.progress = progress or Progress()
+        self.hp = self.max_hp
+        self.stamina = self.stamina_max
         self.iframes = 0
         self.dead = False
 
@@ -44,6 +47,15 @@ class Player(pygame.sprite.Sprite):
         self._windup = 0
         self._hit_ids = set()
         self.attack_rect = None
+
+    # -------------------------------------------------------- geared-up stats
+    @property
+    def max_hp(self):
+        return self.progress.max_hp
+
+    @property
+    def stamina_max(self):
+        return self.progress.stamina_max
 
     # ------------------------------------------------------------------ input
     def on_jump(self):
@@ -73,10 +85,11 @@ class Player(pygame.sprite.Sprite):
             self.vel.y = cfg.PLUNGE_SPEED
 
     def on_dash(self):
-        if self._dash_cd <= 0 and self.stamina >= cfg.DASH_COST and not self._dashing():
-            self.stamina -= cfg.DASH_COST
+        cost = self.progress.dash_cost
+        if self._dash_cd <= 0 and self.stamina >= cost and not self._dashing():
+            self.stamina -= cost
             self._dash_timer = cfg.DASH_FRAMES
-            self._dash_cd = cfg.DASH_FRAMES + cfg.DASH_COOLDOWN
+            self._dash_cd = cfg.DASH_FRAMES + self.progress.dash_cooldown
             self._dash_dir = self.facing
             self.iframes = max(self.iframes, cfg.DASH_IFRAMES)
 
@@ -108,8 +121,8 @@ class Player(pygame.sprite.Sprite):
         if self.dead:
             return
 
-        if self.stamina < cfg.STAMINA_MAX:
-            self.stamina = min(cfg.STAMINA_MAX, self.stamina + cfg.STAMINA_REGEN)
+        if self.stamina < self.stamina_max:
+            self.stamina = min(self.stamina_max, self.stamina + cfg.STAMINA_REGEN)
         if self._dash_cd > 0:
             self._dash_cd -= 1
         if self.iframes > 0:
@@ -194,8 +207,9 @@ class Player(pygame.sprite.Sprite):
 
     @property
     def attack_damage(self):
-        return {"light": cfg.SWING_DAMAGE, "heavy": cfg.HEAVY_DAMAGE,
-                "plunge": cfg.PLUNGE_DAMAGE}.get(self.attack_type, 0)
+        return {"light": self.progress.swing_damage,
+                "heavy": self.progress.heavy_damage,
+                "plunge": self.progress.plunge_damage}.get(self.attack_type, 0)
 
     # ------------------------------------------------------------- being hurt
     def take_hit(self, damage, source_x):
@@ -216,15 +230,15 @@ class Player(pygame.sprite.Sprite):
         if self.iframes > 0 or self.dead:
             return False
         self.hp -= cfg.SEARING_DAMAGE
-        self.iframes = cfg.SEARING_INTERVAL
+        self.iframes = self.progress.searing_interval
         if self.hp <= 0:
             self.hp = 0
             self.dead = True
         return True
 
     def revive(self, spawn=None):
-        self.hp = cfg.PLAYER_MAX_HP
-        self.stamina = cfg.STAMINA_MAX
+        self.hp = self.max_hp
+        self.stamina = self.stamina_max
         self.dead = False
         self.iframes = 0
         self.vel.update(0, 0)

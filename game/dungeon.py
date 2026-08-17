@@ -6,7 +6,8 @@ with loot — "it branches out, only one section is right." The hub has an **exi
 (climb out) so you can leave with your loot. Take the stairs and the next level is
 generated fresh; reach the bottom and you escape the run a winner.
 
-Difficulty (hazards, enemies) and reward (loot) scale with depth. Theme is always
+Difficulty (hazards, Pinchlings, plated Clawknights from Depth 2) and reward
+(Karcite, coin) scale with depth. Theme is always
 the cave palette here. Rooms reuse the shared ``Room`` engine and east/west borders.
 """
 
@@ -23,7 +24,7 @@ def _blank_grid():
 
 
 def generate_room_rows(open_sides, rng, n_haz, n_enemy, n_loot,
-                       stairs=False, exit_up=False):
+                       stairs=False, exit_up=False, n_knight=0, n_coin=0):
     """Build one cave room as a list of ASCII rows."""
     g = _blank_grid()
     w, h = cfg.AREA_COLS, cfg.AREA_ROWS
@@ -63,12 +64,16 @@ def generate_room_rows(open_sides, rng, n_haz, n_enemy, n_loot,
         g[FLOOR_ROW][11] = "<"
     if stairs:
         g[FLOOR_ROW][take()] = ">"
+    for _ in range(n_knight):
+        g[FLOOR_ROW][take()] = "K"
     for _ in range(n_enemy):
         g[FLOOR_ROW][take()] = "E"
     for _ in range(n_haz):
         g[FLOOR_ROW][take()] = "^"
     for _ in range(n_loot):
         g[FLOOR_ROW][take()] = "*"
+    for _ in range(n_coin):
+        g[FLOOR_ROW][take()] = "$"
 
     return ["".join(row) for row in g]
 
@@ -98,6 +103,10 @@ class Dungeon:
         haz = 1 + d                       # more Searing as you go deeper
         enemies = 1 + d
         loot = 1 + d
+        # Plated Clawknights start at Depth 2 — the deep is where the Lower
+        # Karcons are, and where the Shellbreaker stops being optional.
+        knights = max(0, d - 1)
+        coins = 1 + d // 2                # old delvers' purses, down in the dark
 
         self.stairs_side = self.rng.choice(("east", "west"))
         dead = "west" if self.stairs_side == "east" else "east"
@@ -108,10 +117,12 @@ class Dungeon:
             self.stairs_side: Room(
                 generate_room_rows({WEST if self.stairs_side == "east" else EAST},
                                    self.rng, haz, enemies, max(1, loot // 2),
-                                   stairs=True), theme="cave"),
+                                   stairs=True, n_knight=knights // 2,
+                                   n_coin=coins), theme="cave"),
             dead: Room(
                 generate_room_rows({WEST if dead == "east" else EAST},
-                                   self.rng, haz + 1, enemies, loot + 1), theme="cave"),
+                                   self.rng, haz + 1, enemies, loot + 1,
+                                   n_knight=knights, n_coin=coins + 1), theme="cave"),
         }
         self.current = "hub"
         self.visited = {"hub"}
